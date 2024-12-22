@@ -247,7 +247,6 @@ copyButton.addEventListener('click', () => {
 clearButton.addEventListener('click', () => {
   inputText.value = '';
   outputText.value = '';
-  keywordInput.value = '';
   processCurrentMode();
 });
 
