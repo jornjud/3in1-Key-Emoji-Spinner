@@ -135,3 +135,27 @@ button:hover {
     height: 100px;
   }
 }
+
+.video-link {
+  margin-top: 20px; /* เว้นระยะด้านบน */
+  text-align: center; /* จัดกึ่งกลาง */
+  font-size: 1.1rem; /* ขนาดตัวอักษร */
+  font-family: Arial, sans-serif; /* ฟอนต์เดียวกับหน้า */
+}
+
+.video-link a {
+  color: #2196F3; /* สีลิงก์ (เช่น สีฟ้า) */
+  text-decoration: none; /* ตัดเส้นใต้ */
+  font-weight: bold; /* ตัวหนา */
+  transition: color 0.3s ease; /* เพิ่มเอฟเฟกต์ตอน hover */
+}
+
+.video-link a:hover {
+  color: orange; /* เปลี่ยนสีเมื่อวางเมาส์ */
+  text-decoration: underline; /* เพิ่มเส้นใต้เมื่อ hover */
+}
+
+.video-link a:visited {
+  color: #9c27b0; /* สีลิงก์ที่คลิกไปแล้ว */
+}
+
