@@ -7,7 +7,7 @@
 ********************************************************/
 
 /* ------------------ กำหนดตัวอักษรและ DEFAULT KEYWORD ------------------ */
-const ALLOWED_CHARS = 'กขคฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮฤๆะัาิีึืุูเแโใไๅำ่้๊๋abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,./<>?';
+const ALLOWED_CHARS = 'กขคฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮฤๆะัาิีึืุูเแโใไๅำ่้๊๋abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,./<>?๐';
 const DEFAULT_KEYWORD = 'jornjud'; // ถ้า user ไม่กรอก keyword จะใช้ค่านี้
 const DEFAULT_PREFIX = '~'; // ใช้ระบุโหมด Wordspinner
 const SEED_LENGTH = 4; // ความยาว seed

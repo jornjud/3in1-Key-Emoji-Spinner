@@ -159,3 +159,77 @@ button:hover {
   color: #9c27b0; /* สีลิงก์ที่คลิกไปแล้ว */
 }
 
+/* Dark Mode (Automatically Applied if Device is in Dark Mode) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1e1e1e; /* Dark background */
+    color: #e0e0e0; /* Light text */
+  }
+
+  .container {
+    background: #2d2d2d; /* Darker container background */
+    color: #e0e0e0; /* Light text */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Light shadow */
+  }
+
+  h1 {
+    color: #e0e0e0; /* Light text */
+  }
+
+  .mode-btn {
+    background: #444; /* Dark button background */
+    color: #e0e0e0; /* Light text */
+  }
+
+  .mode-btn.active {
+    background: #1976D2; /* Active button color */
+    color: #e0e0e0; /* Light text */
+  }
+
+  .mode-btn:hover {
+    background: #2196F3; /* Hover button color */
+    color: #e0e0e0; /* Light text */
+  }
+
+  .keyword-section label {
+    color: #e0e0e0; /* Light text */
+  }
+
+  .keyword-section input {
+    background: #444; /* Dark input background */
+    color: #e0e0e0; /* Light text */
+    border-color: #666; /* Dark border */
+  }
+
+  textarea {
+    background: #444; /* Dark textarea background */
+    color: #e0e0e0; /* Light text */
+    border-color: #666; /* Dark border */
+  }
+
+  textarea:focus {
+    border-color: #2196F3; /* Focus border color */
+  }
+
+  button {
+    background: #444; /* Dark button background */
+    color: #e0e0e0; /* Light text */
+  }
+
+  button:hover {
+    background: #2196F3; /* Hover button color */
+    color: #e0e0e0; /* Light text */
+  }
+
+  .video-link a {
+    color: #2196F3; /* Link color */
+  }
+
+  .video-link a:hover {
+    color: orange; /* Hover link color */
+  }
+
+  .credit {
+    color: #999; /* Light gray for credit text */
+  }
+}
