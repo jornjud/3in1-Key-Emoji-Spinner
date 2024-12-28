@@ -1,4 +1,3 @@
-
 /*******************************************************
   script.js - Refactored Version
   - รองรับโหมด: XOR (auto-detect), Wordspinner (Shuffle), Emojicode
@@ -212,6 +211,7 @@ function processCurrentMode() {
   btn.addEventListener('click', () => {
     currentMode = btn.id.replace('ModeBtn', '').toLowerCase();
     updateUI();
+    outputText.value = ''; // เคลียร์ช่อง output เมื่อเปลี่ยนโหมด
     processCurrentMode();
 
     [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(b => b.classList.remove('active'));
