@@ -92,11 +92,11 @@ function encodeEmoji(text) {
 }
 
 function decodeEmoji(text) {
-  return [...text].map(ch => emojiToChar.get(ch) || ch).join('');
+  return [...text].map(ch => emojiToChar.has(ch) ? emojiToChar.get(ch) : ch).join('');
 }
 
 function isAllEmoji(str) {
-  return [...str].every(ch => emojiToChar.has(ch));
+  return [...str].every(ch => emojiToChar.has(ch) || ch === ' '); // อนุญาตให้มีช่องว่าง
 }
 
 /* ------------------ Wordspinner (Shuffle) ------------------ */
@@ -182,8 +182,14 @@ function updateUI() {
 }
 
 function processCurrentMode() {
-  const text = inputText.value;
+  const text = inputText.value.trim(); // ใช้ trim() เพื่อลบช่องว่างที่ไม่จำเป็น
   let result = '';
+
+  // ถ้าช่อง input ว่าง ให้ช่อง output เป็นค่าว่างและไม่ต้องทำอะไรต่อ
+  if (!text) {
+    outputText.value = '';
+    return;
+  }
 
   if (!currentMode) {
     outputText.value = '';
