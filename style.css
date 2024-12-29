@@ -248,3 +248,19 @@ button:hover {
     color: #e0e0e0;
   }
 }
+
+/* สไตล์สำหรับข้อความแนะนำให้เลือกโหมด */
+.mode-instruction {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mode-instruction i {
+  color: #2196F3; /* สีไอคอน */
+}
