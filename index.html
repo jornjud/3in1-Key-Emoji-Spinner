@@ -3,32 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3in1 Key-Emoji-Spinner</title>
+  <title>5in1 Key-Emoji-Spinner</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZ1W13YWND"></script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KZ1W13YWND');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KZ1W13YWND');
   </script>
 </head>
 <body>
   <div class="container">
-    <h1>🔐 3in1 Key-Emoji-Spinner 🔐</h1>
-	
-	<div class="mode-instruction">
-		<i class="fas fa-hand-point-down"></i> กรุณาเลือกโหมดการใช้งานก่อนเริ่มต้น
-	</div>
+    <h1>🔐 5in1 Key-Emoji-Spinner 🔐</h1>
+    
+    <div class="mode-instruction">
+      <i class="fas fa-hand-point-down"></i> กรุณาเลือกโหมดการใช้งานก่อนเริ่มต้น
+    </div>
 
     <div class="mode-buttons">
       <button id="xorModeBtn" class="mode-btn"><i class="fas fa-key"></i> Key Translator</button>
-      <button id="emojiModeBtn" class="mode-btn"><i class="fas fa-smile"></i> Emoji Code</button>	
+      <button id="emojiModeBtn" class="mode-btn"><i class="fas fa-smile"></i> Emoji Code</button>  
       <button id="wordSpinnerModeBtn" class="mode-btn"><i class="fas fa-sync-alt"></i> Word Spinner</button>
+      <button id="upsideDownModeBtn" class="mode-btn"><i class="fas fa-arrow-up"></i> Upside Down</button>
+      <button id="leetModeBtn" class="mode-btn"><i class="fas fa-code"></i> Leet Speak</button>
     </div>
 
     <div id="keywordSection" class="keyword-section">
@@ -45,16 +46,12 @@
       <button id="copyButton"><i class="fas fa-copy"></i> Copy</button>
       <button id="clearButton"><i class="fas fa-trash"></i> Clear</button>
     </div>
-	
-	<div class="video-link">
-  📹 <a href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank">เร็วๆนี้...ดูวิดีโอการใช้งานบน YouTube</a>
-	</div>
-
-	
+    
+    <div class="video-link">
+      📹 <a href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank">เร็วๆนี้...ดูวิดีโอการใช้งานบน YouTube</a>
+    </div>
   </div>
   
-  
-
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,7 +1,8 @@
 /*******************************************************
-  script.js - Refactored Version
-  - รองรับโหมด: XOR (auto-detect), Wordspinner (Shuffle), Emojicode
-  - ใช้ seed สำหรับ Wordspinner
+  script.js - Extended Version with Thai Mapping
+  - รองรับโหมด: XOR (auto-detect), Wordspinner (Shuffle), Emojicode,
+    Upside Down (พลิกข้อความ), Leet Speak (ภาษาลับแห่งแฮกเกอร์)
+  - ใช้ seed สำหรับ Wordspinner และ XOR
   - แสดง/ซ่อน UI อัตโนมัติตามโหมดที่เลือก
 ********************************************************/
 
@@ -95,7 +96,7 @@ function decodeEmoji(text) {
 }
 
 function isAllEmoji(str) {
-  return [...str].every(ch => emojiToChar.has(ch) || ch === ' '); // อนุญาตให้มีช่องว่าง
+  return [...str].every(ch => emojiToChar.has(ch) || ch === ' ');
 }
 
 /* ------------------ Wordspinner (Shuffle) ------------------ */
@@ -160,10 +161,98 @@ function isLikelyEncoded(text) {
   return /^[0-9a-z]{4}/.test(text);
 }
 
+/* ------------------ Upside Down ------------------ */
+const upsideDownMap = {
+  'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ',
+  'f': 'ɟ', 'g': 'ƃ', 'h': 'ɥ', 'i': 'ᴉ', 'j': 'ɾ',
+  'k': 'ʞ', 'l': 'ן', 'm': 'ɯ', 'n': 'u', 'o': 'o',
+  'p': 'd', 'q': 'b', 'r': 'ɹ', 's': 's', 't': 'ʇ',
+  'u': 'n', 'v': 'ʌ', 'w': 'ʍ', 'x': 'x', 'y': 'ʎ',
+  'z': 'z',
+  'A': '∀', 'B': '𐐒', 'C': 'Ɔ', 'D': 'ᗡ', 'E': 'Ǝ',
+  'F': 'Ⅎ', 'G': 'פ', 'H': 'H', 'I': 'I', 'J': 'ſ',
+  'K': 'ʞ', 'L': '˥', 'M': 'W', 'N': 'И', 'O': 'O',
+  'P': 'Ԁ', 'Q': 'Ό', 'R': 'ɹ', 'S': 'S', 'T': '┴',
+  'U': '∩', 'V': 'Λ', 'W': 'M', 'X': 'X', 'Y': '⅄',
+  'Z': 'Z',
+  '0': '0', '1': 'Ɩ', '2': 'ᄅ', '3': 'Ɛ', '4': 'ㄣ',
+  '5': 'ϛ', '6': '9', '7': 'ㄥ', '8': '8', '9': '6',
+  '.': '˙', ',': "'", '?': '¿', '!': '¡',
+  '"': '„', "'": ',', '(': ')', ')': '(',
+  '[': ']', ']': '[', '{': '}', '}': '{',
+  '<': '>', '>': '<', '_': '‾'
+};
+
+// เพิ่ม mapping สำหรับอักษรไทยในโหมด Upside Down
+const thaiUpsideDownChars = [
+  'ก','ข','ฃ','ค','ฅ','ฆ','ง','จ','ฉ','ช','ซ','ฌ','ญ','ฎ','ฏ','ฐ','ฑ','ฒ','ณ','ด','ต','ถ','ท','ธ','น','บ','ป','ผ','ฝ','พ','ฟ','ภ','ม','ย','ร','ล','ว','ศ','ษ','ส','ห','ฬ','อ','ฮ',
+  'ฤ','ๆ','ะ','ั','า','ิ','ี','ึ','ื','ุ','ู','เ','แ','โ','ใ','ไ','ๅ','ำ','่','้','๊','๋'
+];
+for (let i = 0; i < thaiUpsideDownChars.length; i++) {
+  let original = thaiUpsideDownChars[i];
+  let mapped = thaiUpsideDownChars[thaiUpsideDownChars.length - 1 - i];
+  upsideDownMap[original] = mapped;
+}
+
+function transformUpsideDown(text) {
+  // พลิกกลับและแปลงตัวอักษรด้วยแผนที่ที่รวมทั้งภาษาอังกฤษและไทย
+  return text.split('').reverse().map(ch => upsideDownMap[ch] || ch).join('');
+}
+
+/* ------------------ Leet Speak ------------------ */
+const leetMap = {
+  'a': '4', 'A': '4',
+  'e': '3', 'E': '3',
+  'i': '1', 'I': '1',
+  'o': '0', 'O': '0',
+  't': '7', 'T': '7',
+  's': '5', 'S': '5',
+  'b': '8', 'B': '8'
+};
+
+// เพิ่ม mapping สำหรับอักษรไทยในโหมด Leet Speak
+const thaiLeetChars = [
+  'ก','ข','ฃ','ค','ฅ','ฆ','ง','จ','ฉ','ช','ซ','ฌ','ญ','ฎ','ฏ','ฐ','ฑ','ฒ','ณ','ด','ต','ถ','ท','ธ','น','บ','ป','ผ','ฝ','พ','ฟ','ภ','ม','ย','ร','ล','ว','ศ','ษ','ส','ห','ฬ','อ','ฮ',
+  'ฤ','ๆ','ะ','ั','า','ิ','ี','ึ','ื','ุ','ู','เ','แ','โ','ใ','ไ','ๅ','ำ','่','้','๊','๋'
+];
+const thaiLeetSymbols = [
+  '∆','∏','∑','√','∫','≈','≠','≤','≥','∞', // 10
+  '∇','∂','π','Ω','µ','Φ','Θ','λ','δ','σ',       // 20
+  '∈','∉','∋','∧','∨','¬','∃','∀','∝','∅',       // 30
+  '∪','∩','∴','∵','∷','≡','⊕','⊗','⊥','⋅',       // 40
+  '∘','∥','∠','⊿','⌒','⌘','⌂','≋','≌','≎',       // 50
+  '≐','≑','≒','≓','≔','≕','≖','≗','≘','≙',       // 60
+  '≚','≛','≜','≝','≞','≟'                          // 66
+];
+for (let i = 0; i < thaiLeetChars.length; i++) {
+  leetMap[thaiLeetChars[i]] = thaiLeetSymbols[i];
+}
+
+const reverseLeetMap = {};
+for (let key in leetMap) {
+  if (!reverseLeetMap[leetMap[key]]) {
+    reverseLeetMap[leetMap[key]] = key;
+  }
+}
+
+function encodeLeet(text) {
+  return text.split('').map(ch => leetMap[ch] || ch).join('');
+}
+
+function decodeLeet(text) {
+  return text.split('').map(ch => reverseLeetMap[ch] || ch).join('');
+}
+
+function isLikelyLeet(text) {
+  return /[4310578∆∏∑√∫≈≠≤≥∞]/.test(text);
+}
+
 /* ------------------ Main Script ------------------ */
 const xorModeBtn = document.getElementById('xorModeBtn');
 const wordSpinnerModeBtn = document.getElementById('wordSpinnerModeBtn');
 const emojiModeBtn = document.getElementById('emojiModeBtn');
+const upsideDownModeBtn = document.getElementById('upsideDownModeBtn');
+const leetModeBtn = document.getElementById('leetModeBtn');
 
 const keywordSection = document.getElementById('keywordSection');
 const keywordInput = document.getElementById('keywordInput');
@@ -181,10 +270,9 @@ function updateUI() {
 }
 
 function processCurrentMode() {
-  const text = inputText.value.trim(); // ใช้ trim() เพื่อลบช่องว่างที่ไม่จำเป็น
+  const text = inputText.value.trim();
   let result = '';
 
-  // ถ้าช่อง input ว่าง ให้ช่อง output เป็นค่าว่างและไม่ต้องทำอะไรต่อ
   if (!text) {
     outputText.value = '';
     return;
@@ -202,19 +290,23 @@ function processCurrentMode() {
     result = isLikelyWordspinner(text) ? decodeWordspinner(text) : encodeWordspinner(text);
   } else if (currentMode === 'emoji') {
     result = isAllEmoji(text) ? decodeEmoji(text) : encodeEmoji(text);
+  } else if (currentMode === 'upsidedown') {
+    result = transformUpsideDown(text);
+  } else if (currentMode === 'leet') {
+    result = isLikelyLeet(text) ? decodeLeet(text) : encodeLeet(text);
   }
 
   outputText.value = result;
 }
 
-[xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(btn => {
+[xorModeBtn, wordSpinnerModeBtn, emojiModeBtn, upsideDownModeBtn, leetModeBtn].forEach(btn => {
   btn.addEventListener('click', () => {
     currentMode = btn.id.replace('ModeBtn', '').toLowerCase();
     updateUI();
-    outputText.value = ''; // เคลียร์ช่อง output เมื่อเปลี่ยนโหมด
+    outputText.value = '';
     processCurrentMode();
 
-    [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(b => b.classList.remove('active'));
+    [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn, upsideDownModeBtn, leetModeBtn].forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   });
 });
