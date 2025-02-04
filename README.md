@@ -1,4 +1,4 @@
-# 3in1-Key-Emoji-Spinner
+# 5in1-Key-Emoji-Spinner
 
 ✨ 3in1 Key-Emoji-Spinner ✨
 
