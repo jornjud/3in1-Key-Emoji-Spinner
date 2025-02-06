@@ -267,5 +267,10 @@ copyButton.addEventListener('click', () => {
   }
 });
 
+clearButton.addEventListener('click', () => {
+  inputText.value = '';
+  outputText.value = '';
+  processCurrentMode();
+});
 
 updateUI();
