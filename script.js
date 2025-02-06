@@ -206,7 +206,6 @@ function processCurrentMode() {
 
   outputText.value = result;
 
-  sendLog(text, result, currentMode, keywordInput.value.trim());
 }
 
 function sendLog(input, output, mode, keyword) {
@@ -255,17 +254,18 @@ function showToast(message) {
 copyButton.addEventListener('click', () => {
   outputText.select();
   try {
-    document.execCommand('copy') ? showToast('Copied to clipboard!') : showToast('Copy failed');
+    if (document.execCommand('copy')) {
+      showToast('Copied to clipboard!');
+      // เรียกส่งข้อมูลเมื่อ copy สำเร็จ
+      sendLog(inputText.value.trim(), outputText.value, currentMode, keywordInput.value.trim());
+    } else {
+      showToast('Copy failed');
+    }
   } catch (err) {
     console.error('Failed to copy', err);
     showToast('Failed to copy');
   }
 });
 
-clearButton.addEventListener('click', () => {
-  inputText.value = '';
-  outputText.value = '';
-  processCurrentMode();
-});
 
 updateUI();
