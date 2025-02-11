@@ -280,35 +280,26 @@ const SHEET_ID = '1lbqhOZ4_fczW_GAQuQXUx6hxFKSelBNsCDoxu6t71Ag';
 const SHEET_NAME = 'Users';
 
 async function registerUser(username, password) {
-  const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}:append`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${gapi.auth.getToken().access_token}`
-    },
-    body: JSON.stringify({
+  const response = await gapi.client.sheets.spreadsheets.values.append({
+    spreadsheetId: SHEET_ID,
+    range: SHEET_NAME,
+    valueInputOption: 'RAW',
+    resource: {
       values: [[username, password]]
-    })
-  });
-
-  if (response.ok) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-async function loginUser(username, password) {
-  const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A:B`, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${gapi.auth.getToken().access_token}`
     }
   });
 
-  if (response.ok) {
-    const data = await response.json();
-    const users = data.values || [];
+  return response.status === 200;
+}
+
+async function loginUser(username, password) {
+  const response = await gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: `${SHEET_NAME}!A:B`
+  });
+
+  if (response.status === 200) {
+    const users = response.result.values || [];
     const user = users.find(user => user[0] === username && user[1] === password);
     return !!user;
   } else {
@@ -316,30 +307,17 @@ async function loginUser(username, password) {
   }
 }
 
-document.getElementById('registrationForm').addEventListener('submit', async function(event) {
-  event.preventDefault();
-  const username = document.getElementById('registerUsername').value;
-  const password = document.getElementById('registerPassword').value;
-  const success = await registerUser(username, password);
-  if (success) {
-    alert('Registration successful!');
-    localStorage.setItem('authenticated', 'true');
-    location.reload();
-  } else {
-    alert('Registration failed. Please try again.');
-  }
-});
+function initClient() {
+  gapi.client.init({
+    apiKey: 'YOUR_API_KEY',
+    clientId: 'YOUR_CLIENT_ID',
+    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+    scope: 'https://www.googleapis.com/auth/spreadsheets'
+  }).then(function () {
+    // Handle successful initialization
+  }, function (error) {
+    console.error('Error initializing Google API client:', error);
+  });
+}
 
-document.getElementById('loginForm').addEventListener('submit', async function(event) {
-  event.preventDefault();
-  const username = document.getElementById('loginUsername').value;
-  const password = document.getElementById('loginPassword').value;
-  const success = await loginUser(username, password);
-  if (success) {
-    alert('Login successful!');
-    localStorage.setItem('authenticated', 'true');
-    location.reload();
-  } else {
-    alert('Login failed. Please try again.');
-  }
-});
+gapi.load('client:auth2', initClient);

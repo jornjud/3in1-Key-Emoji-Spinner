@@ -16,6 +16,12 @@
 
   gtag('config', 'G-KZ1W13YWND');
   </script>
+  <script>
+    // Check if the user is authenticated
+    if (!localStorage.getItem('authenticated')) {
+      window.location.href = 'auth.html';
+    }
+  </script>
 </head>
 <body>
   <div class="container">
