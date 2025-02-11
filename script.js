@@ -181,6 +181,8 @@ function updateUI() {
 }
 
 function processCurrentMode() {
+  if (!requireLogin()) return;
+
   const text = inputText.value.trim(); // ใช้ trim() เพื่อลบช่องว่างที่ไม่จำเป็น
   let result = '';
 
@@ -205,7 +207,6 @@ function processCurrentMode() {
   }
 
   outputText.value = result;
-
 }
 
 function sendLog(input, output, mode, keyword) {
@@ -279,29 +280,35 @@ updateUI();
 const registerForm = document.getElementById('registerForm');
 const loginForm = document.getElementById('loginForm');
 
-registerForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = document.getElementById('registerUsername').value;
-  const password = document.getElementById('registerPassword').value;
-  const response = await registerUser(username, password);
-  if (response.status === 'success') {
-    showToast('Registration successful!');
-  } else {
-    showToast('Registration failed: ' + response.message);
-  }
-});
+if (registerForm) {
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
+    const response = await registerUser(username, password);
+    if (response.status === 'success') {
+      showToast('Registration successful!');
+    } else {
+      showToast('Registration failed: ' + response.message);
+    }
+  });
+}
 
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = document.getElementById('loginUsername').value;
-  const password = document.getElementById('loginPassword').value;
-  const response = await loginUser(username, password);
-  if (response.status === 'success') {
-    showToast('Login successful!');
-  } else {
-    showToast('Login failed: ' + response.message);
-  }
-});
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const response = await loginUser(username, password);
+    if (response.status === 'success') {
+      showToast('Login successful!');
+      setSession(response.user_id);
+      window.location.href = 'index.html';
+    } else {
+      showToast('Login failed: ' + response.message);
+    }
+  });
+}
 
 async function registerUser(username, password) {
   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzKW4BAtiSGrwkInIeYEBc1YxwXdAsKHT3U_Lxpi8hA4q3frXdpL3gZV9c6QdpWiDgnnQ/exec';
@@ -342,33 +349,3 @@ function requireLogin() {
   }
   return true;
 }
-
-function processCurrentMode() {
-  if (!requireLogin()) return;
-
-  const text = inputText.value.trim(); // ใช้ trim() เพื่อลบช่องว่างที่ไม่จำเป็น
-  let result = '';
-
-  // ถ้าช่อง input ว่าง ให้ช่อง output เป็นค่าว่างและไม่ต้องทำอะไรต่อ
-  if (!text) {
-    outputText.value = '';
-    return;
-  }
-
-  if (!currentMode) {
-    outputText.value = '';
-    return;
-  }
-
-  if (currentMode === 'xor') {
-    let key = keywordInput.value.trim() || DEFAULT_KEYWORD;
-    result = isLikelyEncoded(text) ? decodeThaiEng(text, key) : encodeThaiEng(text, key);
-  } else if (currentMode === 'wordspinner') {
-    result = isLikelyWordspinner(text) ? decodeWordspinner(text) : encodeWordspinner(text);
-  } else if (currentMode === 'emoji') {
-    result = isAllEmoji(text) ? decodeEmoji(text) : encodeEmoji(text);
-  }
-
-  outputText.value = result;
-}
-
