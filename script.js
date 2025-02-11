@@ -209,7 +209,7 @@ function processCurrentMode() {
 }
 
 function sendLog(input, output, mode, keyword) {
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzjQ7vBbqf9kk1i3eDFVCIMOjmXyb4AKG5isLTp8W4iub_o1Q2OuWz6Q7nc9d0VQaUu9Q/exec';
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzKW4BAtiSGrwkInIeYEBc1YxwXdAsKHT3U_Lxpi8hA4q3frXdpL3gZV9c6QdpWiDgnnQ/exec';
   fetch(WEB_APP_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -274,3 +274,58 @@ clearButton.addEventListener('click', () => {
 });
 
 updateUI();
+
+/* ------------------ Registration and Login ------------------ */
+function handleRegister(event) {
+  event.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzKW4BAtiSGrwkInIeYEBc1YxwXdAsKHT3U_Lxpi8hA4q3frXdpL3gZV9c6QdpWiDgnnQ/exec';
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'register', username, password }),
+    mode: 'no-cors'
+  }).then(response => {
+    if (response.ok) {
+      alert('Registration successful!');
+      window.location.href = 'login.html';
+    } else {
+      alert('Registration failed. Please try again.');
+    }
+  }).catch(error => console.error('Registration failed:', error));
+}
+
+function handleLogin(event) {
+  event.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzKW4BAtiSGrwkInIeYEBc1YxwXdAsKHT3U_Lxpi8hA4q3frXdpL3gZV9c6QdpWiDgnnQ/exec';
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'login', username, password }),
+    mode: 'no-cors'
+  }).then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem('session', JSON.stringify({ username }));
+        alert('Login successful!');
+        window.location.href = 'index.html';
+      } else {
+        alert('Login failed. Please check your username and password.');
+      }
+    }).catch(error => console.error('Login failed:', error));
+}
+
+function checkSession() {
+  const session = localStorage.getItem('session');
+  if (session) {
+    const { username } = JSON.parse(session);
+    alert(`Welcome back, ${username}!`);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', checkSession);
