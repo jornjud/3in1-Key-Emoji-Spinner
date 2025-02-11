@@ -209,7 +209,7 @@ function processCurrentMode() {
 }
 
 function sendLog(input, output, mode, keyword) {
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzKW4BAtiSGrwkInIeYEBc1YxwXdAsKHT3U_Lxpi8hA4q3frXdpL3gZV9c6QdpWiDgnnQ/exec';
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyUD49ToWwAHhFJAoWYJSGyrloYUAhMKt0I453hhp1ntUwcna-OSPs-6R51pNSkyHgC4A/exec';
   fetch(WEB_APP_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
