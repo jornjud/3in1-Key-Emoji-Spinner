@@ -1,7 +1,5 @@
 /*******************************************************
-  script.js - ฉบับ Username Login + Firestore (แก้ Syntax Error + เปิด sendLog)
-  - แก้ไข Syntax Error ใน WEB_APP_URL
-  - เปิดใช้งาน fetch ใน sendLog
+  script.js - ฉบับ Username Login + Firestore 
 ********************************************************/
 
 // ======== Element References (Auth + App) ========
