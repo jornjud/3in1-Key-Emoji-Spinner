@@ -325,3 +325,22 @@ window.addEventListener('click', (event) => { if (event.target === helpModal) { 
 if (typeof updateUI === 'function') updateUI();
 console.log("สคริปต์ Spinner โหลดและพร้อมใช้งาน (รอการล็อกอิน)");
 // ---- จบสคริปต์ ----
+
+// --- เพิ่มโค้ดนี้ท้ายไฟล์ script.js ---
+
+// ลงทะเบียน Service Worker
+if ('serviceWorker' in navigator) { // เช็คว่า Browser รองรับ Service Worker มั้ย
+  window.addEventListener('load', () => { // รอให้หน้าเว็บโหลดเสร็จก่อนค่อยลงทะเบียน
+    navigator.serviceWorker.register('./sw.js') // บอกตำแหน่งไฟล์ sw.js
+      .then((registration) => {
+        console.log('Service Worker registered successfully with scope:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  });
+} else {
+  console.log('Service Worker is not supported by this browser.');
+}
+
+// ---- จบโค้ดที่เพิ่ม ----
