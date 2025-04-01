@@ -1,33 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="th"> <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3in1 Key-Emoji-Spinner</title>
+  <title>3in1 Key-Emoji-Spinner (Username Login)</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZ1W13YWND"></script>
   <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-KZ1W13YWND');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KZ1W13YWND');
+    // gtag('config', 'G-GRGVJ1V7BX'); // Measurement ID จาก Firebase config
   </script>
 </head>
 <body>
-  <div class="container">
-    <h1>🔐 3in1 Key-Emoji-Spinner 🔐</h1>
-	
-	<div class="mode-instruction">
-		<i class="fas fa-hand-point-down"></i> กรุณาเลือกโหมดการใช้งานก่อนเริ่มต้น
-	</div>
+
+  <div id="auth-container" class="container">
+    <h1>🔐 ล็อกอินก่อนใช้ดิวะ ไอ้สัส! (ใช้ Username นะเว้ย) 🔐</h1>
+    <p style="text-align: center; color: #555;">ต้องเข้าสู่ระบบก่อน ถึงจะใช้ Spinner สุดจ๊าบได้นะมึง!</p>
+
+    <div id="login-form" style="margin-top: 20px;">
+      <h2 style="text-align: center;"><i class="fas fa-user"></i> Login ไอ้สัส!</h2>
+      <div class="input-group" style="margin-bottom: 10px;">
+        <label for="login-username" style="display: block; margin-bottom: 5px;">Username หรือ Email:</label>
+        <input type="text" id="login-username" placeholder="กรอก Username หรือ Email..." required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;">
+      </div>
+      <div class="input-group" style="margin-bottom: 15px;">
+        <label for="login-password" style="display: block; margin-bottom: 5px;">รหัสผ่าน:</label>
+        <input type="password" id="login-password" placeholder="กรอกรหัสผ่าน..." required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;">
+      </div>
+      <button id="login-button" class="action-btn" style="width: 100%; background-color: #2196F3; color: white;"><i class="fas fa-check"></i> ล็อกอินดิเหี้ย!</button>
+    </div>
+
+    <hr style="margin: 25px 0;">
+
+    <div id="register-form">
+      <h2 style="text-align: center;"><i class="fas fa-user-plus"></i> สมัครสมาชิกใหม่เหรอวะ?</h2>
+      <div class="input-group" style="margin-bottom: 10px;">
+         <label for="register-username" style="display: block; margin-bottom: 5px;">Username:</label>
+        <input type="text" id="register-username" placeholder="ตั้ง Username (อังกฤษ/เลข, 3 ตัวขึ้นไป)" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;">
+      </div>
+      <div class="input-group" style="margin-bottom: 10px;">
+         <label for="register-email" style="display: block; margin-bottom: 5px;">Email:</label>
+        <input type="email" id="register-email" placeholder="กรอกอีเมล (ต้องใช้อยู่ดีสัส!)" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;">
+      </div>
+       <div class="input-group" style="margin-bottom: 15px;">
+         <label for="register-password" style="display: block; margin-bottom: 5px;">รหัสผ่าน:</label>
+        <input type="password" id="register-password" placeholder="ตั้งรหัสผ่าน (6 ตัวอักษรขึ้นไป)" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;">
+      </div>
+      <button id="register-button" class="action-btn" style="width: 100%; background-color: #4CAF50; color: white;"><i class="fas fa-plus-circle"></i> สมัครโว้ย!</button>
+    </div>
+
+    <p id="auth-error" style="color: red; text-align: center; margin-top: 15px; font-weight: bold;"></p> </div>
+
+  <div id="app-container" class="container" style="display: none;">
+    <div class="header-with-help">
+      <h1>🔐 3in1 Key-Emoji-Spinner 🔐</h1>
+       <div style="display: flex; align-items: center; gap: 10px;">
+         <span id="user-display" style="font-size: 0.9rem; color: #555;"></span> <button id="logout-button" class="help-btn" title="ออกจากระบบ" style="background-color: #f44336; color: white;"><i class="fas fa-sign-out-alt"></i></button>
+         <button id="helpBtn" class="help-btn" title="วิธีใช้งาน"><i class="fas fa-question-circle"></i></button>
+       </div>
+    </div>
+
+    <div class="mode-instruction">
+      <i class="fas fa-hand-point-down"></i> กรุณาเลือกโหมดการใช้งานก่อนเริ่มต้น
+    </div>
 
     <div class="mode-buttons">
       <button id="xorModeBtn" class="mode-btn"><i class="fas fa-key"></i> Key Translator</button>
-      <button id="emojiModeBtn" class="mode-btn"><i class="fas fa-smile"></i> Emoji Code</button>	
+      <button id="emojiModeBtn" class="mode-btn"><i class="fas fa-smile"></i> Emoji Code</button>
       <button id="wordSpinnerModeBtn" class="mode-btn"><i class="fas fa-sync-alt"></i> Word Spinner</button>
     </div>
 
@@ -42,19 +84,52 @@
     </div>
 
     <div class="action-buttons">
-      <button id="copyButton"><i class="fas fa-copy"></i> Copy</button>
-      <button id="clearButton"><i class="fas fa-trash"></i> Clear</button>
+      <button id="copyButton"><i class="fas fa-copy"></i> คัดลอก</button>
+      <button id="clearButton"><i class="fas fa-trash"></i> ล้าง</button>
     </div>
-	
-	<div class="video-link">
-  📹 <a href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank">เร็วๆนี้...ดูวิดีโอการใช้งานบน YouTube</a>
-	</div>
 
-	
+    <div class="video-link">
+      📹 <a href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank">เร็วๆนี้...ดูวิดีโอการใช้งานบน YouTube</a>
+    </div>
+
   </div>
-  
-  
 
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">×</span>
+      <h2><i class="fas fa-info-circle"></i> วิธีใช้งานแต่ละโหมด 🤓</h2>
+      <div id="helpContent">
+        </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script>
+    // ======== Firebase Configuration (เหมือนเดิม) ========
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3ZXwlQlNPKEaryal0YnbarwQoz1DjhEE", // เช็คให้ดีว่าเป็น Key ของมึงจริงๆ
+      authDomain: "in1-e0d50.firebaseapp.com",
+      projectId: "in1-e0d50",
+      storageBucket: "in1-e0d50.appspot.com", // เช็คอันนี้ด้วย
+      messagingSenderId: "785769870882",
+      appId: "1:785769870882:web:42df8ee3b40eced196bc7b",
+      measurementId: "G-GRGVJ1V7BX"
+    };
+
+    // ======== Initialize Firebase (Auth และ Firestore) ========
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore(); // *** Initialize Firestore ***
+    // const analytics = firebase.analytics();
+
+    console.log("Firebase & Firestore Initialized เรียบร้อยโว้ย!");
+
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
