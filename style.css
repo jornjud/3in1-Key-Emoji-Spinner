@@ -19,16 +19,63 @@ body {
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px; /* ปรับ gap เล็กน้อย */
 }
 
 h1 {
   text-align: center;
-  font-size: 1.8rem; /* ลดขนาด font เพื่อให้พอดีกับหน้าจอเล็ก */
+  font-size: 1.8rem;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 0; /* เอา margin ล่างออก เพราะใช้ gap ใน .header-with-help */
   white-space: nowrap;
 }
+
+/* --- สไตล์สำหรับ Header และปุ่ม Help --- */
+.header-with-help {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* ระยะห่างระหว่าง H1 กับปุ่ม Help */
+  position: relative; /* สำหรับจัดตำแหน่งปุ่ม */
+  margin-bottom: 10px; /* เพิ่มระยะห่างด้านล่างนิดหน่อย */
+}
+
+.help-btn {
+  padding: 8px 10px; /* ขนาดปุ่มเล็กลง */
+  font-size: 1.2rem; /* ขนาดไอคอน */
+  background-color: #f0f0f0; /* สีพื้นหลัง */
+  color: #555; /* สีไอคอน */
+  border: 1px solid #ccc;
+  border-radius: 50%; /* ทำให้เป็นวงกลม */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1; /* ป้องกันปุ่มสูงเกิน */
+  /* ไม่ต้องใช้ position absolute แล้ว */
+}
+
+.help-btn:hover {
+  background-color: #2196F3;
+  color: white;
+  border-color: #1976D2;
+  transform: scale(1.1); /* ขยายนิดหน่อยตอน hover */
+}
+
+/* สไตล์สำหรับข้อความแนะนำให้เลือกโหมด */
+.mode-instruction {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  /* margin-bottom: 15px; */ /* ใช้ gap ของ container แทน */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mode-instruction i {
+  color: #2196F3; /* สีไอคอน */
+}
+
 
 /* Mode Buttons */
 .mode-buttons {
@@ -54,39 +101,42 @@ h1 {
 .mode-btn.active {
   background: #2196F3;
   color: #fff;
+  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.4); /* เพิ่มเงาให้ปุ่ม active */
 }
 
-.mode-btn:hover {
-  background: #1976D2;
-  color: #fff;
+.mode-btn:hover:not(.active) { /* hover เฉพาะปุ่มที่ไม่ active */
+  background: #d5d5d5;
 }
 
 /* Keyword Section */
 .keyword-section {
-  display: none;
+  display: none; /* เริ่มต้นซ่อนไว้ */
   justify-content: center;
   align-items: center;
   gap: 15px;
+  width: 100%; /* ให้เต็มความกว้าง container */
+  max-width: 450px; /* กำหนดความกว้างสูงสุด */
+  margin: 0 auto; /* จัดกลาง */
 }
 
 .keyword-section label {
   font-size: 1.1rem;
   color: #555;
+  white-space: nowrap; /* ไม่ให้ label ตกบรรทัด */
 }
 
 .keyword-section input {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  width: 100%;
-  max-width: 300px;
+  flex-grow: 1; /* ให้ input ยืดเต็มพื้นที่ที่เหลือ */
   font-size: 1rem;
 }
 
 /* Input/Output Section */
 .io-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* เรียงแนวตั้งเหมือนเดิม */
   gap: 10px; /* ลดระยะห่าง */
   align-items: center;
   width: 100%;
@@ -100,13 +150,15 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem; /* ลดขนาด font */
-  resize: none;
+  resize: vertical; /* อนุญาตให้ปรับขนาดแนวตั้ง */
   transition: border-color 0.3s ease;
+  box-sizing: border-box; /* รวม padding, border ใน width/height */
 }
 
 textarea:focus {
   border-color: #2196F3;
   outline: none;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5); /* เพิ่มเงาตอน focus */
 }
 
 /* Action Buttons */
@@ -116,29 +168,43 @@ textarea:focus {
   justify-content: center;
 }
 
-button {
+button:not(.mode-btn):not(.help-btn) { /* ไม่เอา style นี้ไปใช้กับปุ่ม mode และ help */
   cursor: pointer;
   padding: 12px 20px;
   border: none;
   background-color: #e0e0e0;
   border-radius: 8px;
-  transition: background 0.3s;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
   font-size: 1.1rem;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-button:hover {
-  background-color: #2196F3;
+button:not(.mode-btn):not(.help-btn):hover {
+  background-color: #555; /* สีเข้มขึ้นตอน hover */
   color: #fff;
+}
+
+button:not(.mode-btn):not(.help-btn):active {
+   transform: scale(0.95); /* ปุ่มยุบลงนิดนึงตอนกด */
+}
+
+#copyButton:hover {
+  background-color: #4CAF50; /* สีเขียว */
+  color: white;
+}
+
+#clearButton:hover {
+  background-color: #f44336; /* สีแดง */
+  color: white;
 }
 
 /* Video Link */
 .video-link {
-  margin-top: 25px;
+  /* margin-top: 25px; */ /* ใช้ gap ของ container แทน */
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem; /* ปรับขนาดนิดหน่อย */
   font-family: 'Arial', sans-serif;
 }
 
@@ -158,7 +224,7 @@ button:hover {
   color: #9c27b0;
 }
 
-/* Credit Section */
+/* Credit Section (ถ้ามี) */
 .credit {
   text-align: center;
   font-size: 0.9rem;
@@ -169,6 +235,134 @@ button:hover {
 .credit strong {
   color: #333;
 }
+
+/* --- สไตล์สำหรับ Modal --- */
+.modal {
+  display: none; /* ซ่อนไว้ตอนแรก */
+  position: fixed; /* อยู่กับที่ */
+  z-index: 9999; /* อยู่หน้าสุด */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* เลื่อนได้ถ้าเนื้อหาเยอะ */
+  background-color: rgba(0,0,0,0.6); /* พื้นหลังดำโปร่งแสง */
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  color: #333;
+  margin: 10% auto; /* ปรับระยะบนลงมาหน่อย */
+  padding: 25px 30px;
+  border: 1px solid #888;
+  width: 90%; /* กว้างขึ้นสำหรับจอเล็ก */
+  max-width: 550px; /* ความกว้างสูงสุด */
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* ปรับ animation */
+}
+
+/* ปุ่มปิด (X) */
+.close-btn {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #1976D2;
+  text-align: center;
+  margin-bottom: 25px; /* เพิ่มระยะห่าง */
+  font-size: 1.5rem;
+}
+.modal-content h2 i {
+  margin-right: 8px;
+}
+
+/* สไตล์เนื้อหาใน Modal */
+#helpContent div {
+  margin-bottom: 18px; /* เพิ่มระยะห่าง */
+  padding-bottom: 18px;
+  border-bottom: 1px solid #eee;
+}
+#helpContent div:last-child {
+  border-bottom: none; /* ไม่ต้องมีเส้นคั่นอันสุดท้าย */
+  margin-bottom: 0;
+}
+#helpContent h3 {
+  margin-bottom: 10px; /* เพิ่มระยะห่าง */
+  color: #333;
+  font-size: 1.2rem; /* ใหญ่ขึ้นนิดนึง */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#helpContent h3 i {
+  color: #555; /* สีไอคอนในหัวข้อ */
+}
+#helpContent p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1rem; /* ขนาดปกติ */
+  color: #555;
+}
+#helpContent code {
+  background-color: #e8e8e8;
+  padding: 3px 6px; /* ปรับ padding */
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95em; /* เล็กลงนิดนึง */
+  color: #c7254e; /* สีโค้ด */
+}
+
+/* --- สไตล์สำหรับ Toast Notification --- */
+.toast-notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.85); /* เข้มขึ้น */
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 25px; /* ทำให้มนๆ */
+  font-size: 1rem;
+  z-index: 10000; /* อยู่หน้าสุดดด */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  white-space: nowrap; /* ไม่ให้ตกบรรทัด */
+  animation: fadeInOut 2.5s ease-in-out forwards; /* forwards ให้ค้างเฟรมสุดท้าย */
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes slideIn {
+  from {transform: translateY(-30px); opacity: 0;}
+  to {transform: translateY(0); opacity: 1;}
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; bottom: 0px; }
+  10% { opacity: 1; bottom: 30px; }
+  90% { opacity: 1; bottom: 30px; }
+  100% { opacity: 0; bottom: 0px; }
+}
+
+
 
 /* Dark Mode (Automatically Applied if Device is in Dark Mode) */
 @media (prefers-color-scheme: dark) {
@@ -183,29 +377,35 @@ button:hover {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
   }
 
-  h1 {
-    color: #e0e0e0;
-  }
+  h1 { color: #e0e0e0; }
+  .mode-instruction { color: #bbb; }
+  .mode-instruction i { color: #64b5f6; } /* สีไอคอนสว่างขึ้น */
 
   .mode-btn {
     background: #444;
     color: #e0e0e0;
   }
-
   .mode-btn.active {
     background: #1976D2;
     color: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(25, 118, 210, 0.5);
+  }
+  .mode-btn:hover:not(.active) {
+    background: #555;
   }
 
-  .mode-btn:hover {
-    background: #2196F3;
-    color: #e0e0e0;
+  .help-btn {
+    background-color: #444;
+    color: #bbb;
+    border-color: #666;
+  }
+  .help-btn:hover {
+    background-color: #64b5f6;
+    color: #1e1e1e;
+    border-color: #64b5f6;
   }
 
-  .keyword-section label {
-    color: #e0e0e0;
-  }
-
+  .keyword-section label { color: #e0e0e0; }
   .keyword-section input {
     background: #444;
     color: #e0e0e0;
@@ -217,50 +417,50 @@ button:hover {
     color: #e0e0e0;
     border-color: #666;
   }
-
   textarea:focus {
-    border-color: #2196F3;
+    border-color: #64b5f6; /* สีฟ้าอ่อน */
+    box-shadow: 0 0 5px rgba(100, 181, 246, 0.6);
   }
 
-  button {
+  button:not(.mode-btn):not(.help-btn) {
     background: #444;
     color: #e0e0e0;
   }
+  button:not(.mode-btn):not(.help-btn):hover {
+    background: #666;
+  }
+  #copyButton:hover { background-color: #66bb6a; color: #1e1e1e; } /* เขียวอ่อน */
+  #clearButton:hover { background-color: #ef5350; color: #1e1e1e; } /* แดงอ่อน */
 
-  button:hover {
-    background: #2196F3;
+  .video-link a { color: #64b5f6; }
+  .video-link a:hover { color: #90caf9; }
+  .video-link a:visited { color: #ba68c8; } /* ม่วงอ่อน */
+
+  .credit { color: #999; }
+  .credit strong { color: #e0e0e0; }
+
+  /* Dark Mode Modal */
+  .modal-content {
+    background-color: #333;
     color: #e0e0e0;
+    border-color: #555;
+  }
+  .close-btn { color: #aaa; }
+  .close-btn:hover, .close-btn:focus { color: #fff; }
+  .modal-content h2 { color: #64b5f6; }
+  #helpContent div { border-bottom-color: #555; }
+  #helpContent h3 { color: #e0e0e0; }
+  #helpContent h3 i { color: #bbb; }
+  #helpContent p { color: #ccc; }
+  #helpContent code {
+    background-color: #444;
+    color: #ffab91; /* สีส้มอ่อน */
   }
 
-  .video-link a {
-    color: #2196F3;
+  /* Dark Mode Toast */
+  .toast-notification {
+      background-color: rgba(240, 240, 240, 0.9); /* พื้นหลังสว่าง */
+      color: #1e1e1e; /* ตัวหนังสือดำ */
+      box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
   }
-
-  .video-link a:hover {
-    color: #1976D2;
-  }
-
-  .credit {
-    color: #999;
-  }
-
-  .credit strong {
-    color: #e0e0e0;
-  }
-}
-
-/* สไตล์สำหรับข้อความแนะนำให้เลือกโหมด */
-.mode-instruction {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.mode-instruction i {
-  color: #2196F3; /* สีไอคอน */
 }
