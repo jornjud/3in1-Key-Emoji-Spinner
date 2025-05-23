@@ -1,351 +1,665 @@
-/* General styles */
+/* General Styles */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif; /* Modern, clean font */
   margin: 0;
-  padding: 20px; /* เพิ่ม padding รอบ body หน่อย กันติดขอบ */
-  background: #f4f4f4;
-  display: flex; /* ใช้ flex เพื่อจัดกลาง */
-  flex-direction: column; /* เรียง container แนวตั้ง */
-  justify-content: center; /* จัดกลางแนวตั้ง (อาจจะไม่เห็นผลถ้า content ยาว) */
-  align-items: center; /* จัดกลางแนวนอน */
+  padding: 20px;
+  background-color: #f4f7f6; /* Light, calming background */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  box-sizing: border-box; /* นับ padding เข้าไปในขนาดด้วย */
+  box-sizing: border-box;
+  color: #333; /* Default text color for light mode */
 }
 
-/* --- Container หลักของแอป Spinner --- */
-/* ใช้กับ #app-container ที่แสดงหลัง Login */
+/* Main Container for Auth and App */
 .container {
   width: 90%;
-  max-width: 800px; /* Container หลักกว้างหน่อย */
-  background: #fff;
-  padding: 30px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  display: flex; /* ใช้ flex เหมือนเดิม */
+  padding: 30px 35px; /* Adjusted padding */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Softer, more diffused shadow */
+  border-radius: 16px; /* Modern rounded corners */
+  display: flex;
   flex-direction: column;
-  gap: 20px;
-  /* ซ่อนไว้ตอนแรก (JS จะแก้ display เป็น flex ตอน login) */
-  /* display: none; <-- เอาออก ให้ JS จัดการ */
+  gap: 20px; /* Consistent gap */
 }
 
-/* --- Container ของหน้า Login/Register --- */
-/* อันนี้จะแสดงตอนแรก (JS จะแก้ display เป็น block ตอน logout) */
+/* Authentication Container Specifics */
 #auth-container {
-  width: 90%; /* ทำให้กว้างเท่าๆ กัน */
-  max-width: 450px; /* แต่จำกัดความกว้างให้แคบกว่า เหมาะกับฟอร์ม */
-  background-color: #fff; /* สีพื้นหลังสว่าง (Light Mode) */
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  margin: 40px auto; /* จัดกลาง */
-  color: #333; /* สีตัวหนังสือ (Light Mode) */
-  /* display: block; <-- เอาออก ให้ JS จัดการ */
+  max-width: 420px; /* Optimal width for forms */
+  background-color: #ffffff; /* Clean white background */
+  margin: 40px auto; /* Centering */
 }
 
-/* --- สไตล์ทั่วไปที่ใช้ทั้งสองส่วน (อาจจะต้องปรับตามความเหมาะสม) --- */
-h1 { /* หัวข้อหลักของ Spinner */
+/* App View Specifics */
+.app-view {
+  max-width: 800px; /* Wider for app content */
+  background-color: #ffffff;
+}
+
+/* Headings */
+h1 {
   text-align: center;
-  font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 0;
-  white-space: nowrap;
+  font-size: 1.8rem; /* Responsive font size */
+  font-weight: 600; /* Semi-bold */
+  color: #2c3e50; /* Deep cool blue-gray */
+  margin-bottom: 8px; /* Reduced margin */
 }
 
-/* --- สไตล์สำหรับ Header และปุ่ม Help (ใน #app-container) --- */
+#auth-container h1 {
+  font-size: 1.7rem; /* Slightly smaller for auth heading */
+  margin-bottom: 12px;
+}
+
+#auth-container p { /* Subtext in auth */
+  text-align: center;
+  color: #7f8c8d; /* Softer gray */
+  margin-bottom: 25px; /* Space before form */
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+#auth-container h2 { /* Login / Register titles */
+  font-size: 1.4rem;
+  font-weight: 500; /* Medium weight */
+  margin-bottom: 20px;
+  text-align: center;
+  color: #34495e; /* Another shade of cool blue-gray */
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+#auth-container h2 i { /* Icons in form headings */
+  margin-right: 8px;
+  color: #3498db; /* Accent color for icons */
+}
+
+/* Input Groups and Labels */
+.input-group {
+  margin-bottom: 18px;
+}
+
+#auth-container label {
+  display: block;
+  margin-bottom: 7px; /* Slightly reduced margin */
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #555e68; /* Darker gray for better readability */
+}
+
+/* Input Fields */
+#auth-container input[type="text"],
+#auth-container input[type="email"],
+#auth-container input[type="password"] {
+  width: 100%;
+  padding: 13px 16px; /* Adjusted padding for a sleeker look */
+  border: 1px solid #dfe6e9; /* Light, subtle border */
+  border-radius: 10px; /* Consistent rounded corners */
+  background-color: #f8f9fa; /* Very light off-white */
+  color: #333;
+  font-size: 0.95rem; /* Slightly smaller font for inputs */
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+#auth-container input[type="text"]:focus,
+#auth-container input[type="email"]:focus,
+#auth-container input[type="password"]:focus {
+  outline: none;
+  border-color: #3498db; /* Accent color on focus */
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15); /* Soft focus glow */
+}
+
+/* Action Buttons (Login, Register) */
+#auth-container .action-btn {
+  width: 100%;
+  padding: 13px 20px; /* Adjusted padding */
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem; /* Clear font size */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-transform: none; /* Keeping it natural */
+  letter-spacing: 0.3px; /* Subtle letter spacing */
+}
+
+#login-button {
+  background-color: #3498db; /* Primary action blue */
+  color: white;
+}
+#login-button:hover {
+  background-color: #2980b9; /* Darker shade on hover */
+}
+
+#register-button { /* Specific class for register button if needed */
+  background-color: #2ecc71; /* Friendly green for sign-up */
+  color: white;
+}
+#register-button:hover {
+  background-color: #27ae60; /* Darker green */
+}
+
+#auth-container .action-btn:active {
+  transform: scale(0.98); /* Click feedback */
+}
+
+/* Form Switcher Text (e.g., "Don't have an account?") */
+.form-switcher-text {
+  text-align: center;
+  margin-top: 20px; /* Space above the link */
+  font-size: 0.85rem; /* Smaller text */
+  color: #555e68;
+}
+.form-switcher-text a {
+  color: #3498db; /* Accent color for link */
+  text-decoration: none;
+  font-weight: 500;
+}
+.form-switcher-text a:hover {
+  text-decoration: underline;
+}
+
+/* Auth Error Message */
+#auth-error {
+  color: #e74c3c; /* Standard error red */
+  text-align: center;
+  margin-top: 15px; /* Reduced margin */
+  font-weight: 500;
+  min-height: 1.2em; /* Ensure space even if empty */
+  font-size: 0.9rem;
+}
+
+
+/* --- Styles for the Main App (#app-container) --- */
 .header-with-help {
   display: flex;
-  justify-content: center; /* แก้เป็น space-between ถ้าอยากให้ชื่ออยู่กลาง ปุ่มอยู่ขวา */
+  justify-content: space-between; /* Align title left, buttons right */
   align-items: center;
   gap: 15px;
-  position: relative;
-  margin-bottom: 10px;
-  flex-wrap: wrap; /* เผื่อจอเล็ก */
+  margin-bottom: 15px; /* Increased margin */
+  flex-wrap: wrap;
+}
+.header-with-help h1 {
+    margin-bottom: 0; /* Remove bottom margin from h1 inside this div */
+    text-align: left; /* Align title to the left */
 }
 
-/* สไตล์ปุ่ม Help และ Logout (ใช้ class เดียวกันได้) */
-.help-btn { /* ใช้กับ #helpBtn และ #logout-button */
-  padding: 8px 10px;
-  font-size: 1.2rem;
+/* Help and Logout Buttons */
+.help-btn {
+  padding: 9px 11px; /* Slightly adjusted padding */
+  font-size: 1.1rem; /* Adjusted icon size */
   background-color: #f0f0f0;
   color: #555;
-  border: 1px solid #ccc;
-  border-radius: 50%;
+  border: 1px solid #dcdcdc; /* Softer border */
+  border-radius: 50%; /* Circular buttons */
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   line-height: 1;
-  display: inline-flex; /* ทำให้ปุ่มไม่กินพื้นที่เต็มบรรทัด */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-
 .help-btn:hover {
-  background-color: #2196F3;
-  color: white;
-  border-color: #1976D2;
-  transform: scale(1.1);
+  background-color: #e0e0e0;
+  color: #333;
+  border-color: #c0c0c0;
+  transform: translateY(-1px); /* Subtle lift */
 }
-/* ทำให้ปุ่ม Logout มีสีต่างหาก */
 #logout-button {
-    background-color: #f44336;
+    background-color: #e74c3c; /* Consistent red for logout */
     color: white;
-    border-color: #d32f2f;
+    border-color: #e74c3c;
 }
 #logout-button:hover {
-    background-color: #d32f2f;
-    border-color: #c62828;
+    background-color: #c0392b; /* Darker red on hover */
+    border-color: #c0392b;
 }
-/* แสดง email/username ข้างๆ ปุ่ม logout */
 #user-display {
     font-size: 0.9rem;
     color: #555;
-    margin-right: 5px; /* ระยะห่างจากปุ่ม */
+    margin-right: 5px;
 }
 
-
-/* --- สไตล์สำหรับส่วน Spinner App (#app-container) --- */
-
+/* Mode Instruction */
 .mode-instruction {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.05rem; /* Slightly adjusted */
   color: #555;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding: 10px;
+  background-color: #f9f9f9; /* Subtle background */
+  border-radius: 8px;
 }
-.mode-instruction i { color: #2196F3; }
+.mode-instruction i { color: #3498db; }
 
+/* Mode Buttons */
 .mode-buttons {
   display: flex;
-  gap: 15px;
+  gap: 12px; /* Adjusted gap */
   justify-content: center;
   flex-wrap: wrap;
 }
 .mode-btn {
-  padding: 12px 20px;
-  border: none;
-  background: #e0e0e0;
+  padding: 10px 18px; /* Adjusted padding */
+  border: 1px solid transparent; /* Prepare for active state border */
+  background: #e9ecef; /* Lighter gray */
+  color: #495057; /* Darker text for better contrast */
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
+  font-size: 1rem; /* Adjusted font size */
+  font-weight: 500; /* Medium weight */
+  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .mode-btn.active {
-  background: #2196F3;
+  background: #3498db;
   color: #fff;
-  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.4);
+  border-color: #2980b9; /* Border for active state */
+  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
 }
-.mode-btn:hover:not(.active) { background: #d5d5d5; }
+.mode-btn:hover:not(.active) {
+  background: #ced4da; /* Darker hover for non-active */
+  border-color: #adb5bd;
+}
 
+/* Keyword Section */
 .keyword-section {
-  display: none; /* JS จะแก้เป็น flex */
+  display: flex; /* Keep as flex for JS toggle */
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
   width: 100%;
   max-width: 450px;
   margin: 0 auto;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
-.keyword-section label { font-size: 1.1rem; color: #555; white-space: nowrap; }
-.keyword-section input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; flex-grow: 1; font-size: 1rem; }
+.keyword-section label {
+  font-size: 1rem;
+  color: #495057;
+  white-space: nowrap;
+}
+.keyword-section input {
+  padding: 9px 12px; /* Adjusted padding */
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  flex-grow: 1;
+  font-size: 0.95rem;
+  background-color: #fff;
+}
+.keyword-section input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+}
 
-.io-section { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
+/* Input/Output Textareas */
+.io-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+}
 textarea {
   width: 100%;
   max-width: 100%;
   height: 120px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  padding: 12px 15px; /* Adjusted padding */
+  border: 1px solid #ced4da;
   border-radius: 8px;
   font-size: 1rem;
   resize: vertical;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* เพิ่ม shadow transition */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
+  background-color: #fff;
 }
 textarea:focus {
-  border-color: #2196F3;
+  border-color: #3498db;
   outline: none;
-  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
-.action-buttons { display: flex; gap: 15px; justify-content: center; }
-/* ปุ่ม Copy, Clear (ใช้สไตล์ทั่วไปนี้) */
-button:not(.mode-btn):not(.help-btn):not(.action-btn) { /* เพิ่ม not(.action-btn) กันตีกับปุ่ม Auth */
+/* Action Buttons (Copy, Clear) */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+/* General style for Copy/Clear buttons */
+.action-buttons button {
   cursor: pointer;
-  padding: 12px 20px;
-  border: none;
-  background-color: #e0e0e0;
+  padding: 10px 18px; /* Adjusted padding */
+  border: 1px solid #ced4da; /* Subtle border */
+  background-color: #f8f9fa; /* Light background */
+  color: #495057; /* Darker text */
   border-radius: 8px;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  font-size: 1.1rem;
-  display: inline-flex; /* แก้เป็น inline-flex */
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  display: inline-flex;
   align-items: center;
-  justify-content: center; /* จัดกลาง */
+  justify-content: center;
   gap: 8px;
 }
-button:not(.mode-btn):not(.help-btn):not(.action-btn):hover { background-color: #555; color: #fff; }
-button:not(.mode-btn):not(.help-btn):not(.action-btn):active { transform: scale(0.95); }
-#copyButton:hover { background-color: #4CAF50; color: white; }
-#clearButton:hover { background-color: #f44336; color: white; }
-
-.video-link { text-align: center; font-size: 1.1rem; font-family: 'Arial', sans-serif; }
-.video-link a { color: #2196F3; text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
-.video-link a:hover { color: #1976D2; text-decoration: underline; }
-.video-link a:visited { color: #9c27b0; }
-
-/* --- สไตล์สำหรับ Modal (Help) --- */
-.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); animation: fadeIn 0.3s ease-out; }
-.modal-content { background-color: #fefefe; color: #333; margin: 10% auto; padding: 25px 30px; border: 1px solid #888; width: 90%; max-width: 550px; border-radius: 10px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.2); animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
-.close-btn { color: #aaa; position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; line-height: 1; cursor: pointer; }
-.close-btn:hover, .close-btn:focus { color: black; text-decoration: none; }
-.modal-content h2 { margin-top: 0; color: #1976D2; text-align: center; margin-bottom: 25px; font-size: 1.5rem; }
-.modal-content h2 i { margin-right: 8px; }
-#helpContent div { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid #eee; }
-#helpContent div:last-child { border-bottom: none; margin-bottom: 0; }
-#helpContent h3 { margin-bottom: 10px; color: #333; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
-#helpContent h3 i { color: #555; }
-#helpContent p { margin: 0; line-height: 1.6; font-size: 1rem; color: #555; }
-#helpContent code { background-color: #e8e8e8; padding: 3px 6px; border-radius: 4px; font-family: monospace; font-size: 0.95em; color: #c7254e; }
-
-/* --- สไตล์สำหรับ Toast Notification --- */
-.toast-notification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background-color: rgba(0, 0, 0, 0.85); color: #fff; padding: 12px 25px; border-radius: 25px; font-size: 1rem; z-index: 10000; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); white-space: nowrap; animation: fadeInOut 2.5s ease-in-out forwards; }
-
-/* --- สไตล์สำหรับหน้า Login/Register (#auth-container) - จากที่แนะนำ --- */
-#auth-container h1 { /* หัวข้อใหญ่หน้า Auth */
-  font-size: 1.6rem;
-  margin-bottom: 10px;
-  text-align: center;
-  color: #1976D2; /* สีน้ำเงิน (Light Mode) */
+.action-buttons button:hover {
+  border-color: #adb5bd;
+  background-color: #e9ecef;
+  transform: translateY(-1px);
 }
-#auth-container p { /* ย่อหน้าแนะนำหน้า Auth */
-  text-align: center;
-  color: #555; /* สีเทา (Light Mode) */
-  margin-bottom: 25px;
+.action-buttons button:active {
+  transform: scale(0.97);
 }
-#auth-container h2 { /* หัวข้อ Login / Register */
-  font-size: 1.3rem;
+#copyButton:hover {
+  background-color: #2ecc71; /* Green for copy */
+  border-color: #2ecc71;
+  color: white;
+}
+#clearButton:hover {
+  background-color: #e74c3c; /* Red for clear */
+  border-color: #e74c3c;
+  color: white;
+}
+
+/* Video Link */
+.video-link {
+  text-align: center;
+  font-size: 1rem; /* Adjusted size */
+}
+.video-link a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+}
+.video-link a:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Modal (Help) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5); /* Slightly darker overlay */
+  animation: fadeInModal 0.3s ease-out;
+}
+.modal-content {
+  background-color: #ffffff;
+  color: #333;
+  margin: 10% auto;
+  padding: 25px 30px;
+  border: none; /* Removed border */
+  width: 90%;
+  max-width: 550px;
+  border-radius: 12px; /* Softer radius */
+  position: relative;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* Enhanced shadow */
+  animation: slideInModal 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.close-btn {
+  color: #aaa;
+  position: absolute;
+  top: 12px; /* Adjusted position */
+  right: 15px;
+  font-size: 26px; /* Adjusted size */
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.close-btn:hover, .close-btn:focus {
+  color: #333;
+}
+.modal-content h2 {
+  margin-top: 0;
+  color: #2980b9; /* Darker blue for modal title */
+  text-align: center;
   margin-bottom: 20px;
-  text-align: center;
-  color: #333; /* สีเข้ม (Light Mode) */
-  border-bottom: 1px solid #eee; /* เส้นคั่น */
-  padding-bottom: 10px;
+  font-size: 1.4rem;
 }
-#auth-container hr { /* เส้นคั่นกลาง */
-  border: none; height: 1px; background-color: #ccc; margin: 30px 0;
+.modal-content h2 i { margin-right: 8px; }
+#helpContent div {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0; /* Lighter separator */
 }
-.input-group { margin-bottom: 18px; } /* กลุ่ม Label + Input */
-#auth-container label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 0.95rem; color: #444; }
-#auth-container input[type="text"],
-#auth-container input[type="email"],
-#auth-container input[type="password"] {
-  width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; background-color: #fff; color: #333; font-size: 1rem; box-sizing: border-box; transition: border-color 0.3s ease, box-shadow 0.3s ease;
+#helpContent div:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
 }
-#auth-container input[type="text"]:focus,
-#auth-container input[type="email"]:focus,
-#auth-container input[type="password"]:focus {
-  outline: none; border-color: #2196F3; box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+#helpContent h3 {
+  margin-bottom: 8px;
+  color: #34495e; /* Consistent heading color */
+  font-size: 1.15rem; /* Adjusted size */
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-#auth-container .action-btn { /* ปุ่ม Login, Register */
-  width: 100%; padding: 12px 20px; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease, transform 0.1s ease; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+#helpContent h3 i { color: #555; }
+#helpContent p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 0.95rem; /* Adjusted size */
+  color: #555;
 }
-#login-button { background-color: #2196F3; color: white; } /* สีปุ่ม Login */
-#login-button:hover { background-color: #1976D2; }
-#register-button { background-color: #4CAF50; color: white; } /* สีปุ่ม Register */
-#register-button:hover { background-color: #388E3C; }
-#auth-container .action-btn:active { transform: scale(0.98); }
-#auth-error { color: #f44336; text-align: center; margin-top: 20px; font-weight: bold; min-height: 1.2em; }
+#helpContent code {
+  background-color: #eef1f2; /* Lighter code background */
+  padding: 3px 6px;
+  border-radius: 5px; /* Softer radius */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  color: #c7254e; /* Consistent code color */
+}
 
+/* Toast Notification */
+.toast-notification {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(44, 62, 80, 0.9); /* Darker, more modern toast */
+  color: #fff;
+  padding: 12px 22px; /* Adjusted padding */
+  border-radius: 25px; /* Pill shape */
+  font-size: 0.95rem;
+  z-index: 10000;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); /* Softer shadow */
+  white-space: nowrap;
+  animation: fadeInOutToast 2.8s ease-in-out forwards; /* Slightly longer duration */
+}
 
-/* --- Animation --- */
-@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-@keyframes slideIn { from {transform: translateY(-30px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
-@keyframes fadeInOut { 0% { opacity: 0; bottom: 0px; } 10% { opacity: 1; bottom: 30px; } 90% { opacity: 1; bottom: 30px; } 100% { opacity: 0; bottom: 0px; } }
-
+/* Animations */
+@keyframes fadeInModal { from {opacity: 0;} to {opacity: 1;} }
+@keyframes slideInModal { from {transform: translateY(-25px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+@keyframes fadeInOutToast {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 10px); }
+}
 
 /* --- Dark Mode --- */
 @media (prefers-color-scheme: dark) {
   body {
-    background: #1e1e1e;
-    color: #e0e0e0;
+    background: #1c1c1e; /* iOS-like dark background */
+    color: #f2f2f7; /* Light text for dark mode */
   }
 
-  /* สไตล์ Container หลักของแอป Spinner ใน Dark Mode */
-  .container {
-    background: #2d2d2d;
-    color: #e0e0e0;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  }
-  /* สไตล์ Container ของหน้า Login/Register ใน Dark Mode */
-  #auth-container {
-    background-color: #2d2d2d; /* ใช้สีเดียวกับ .container */
-    color: #e0e0e0;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* เงาเข้มขึ้น */
+  .container, #auth-container, .app-view {
+    background: #2c2c2e; /* Darker component background */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* More pronounced shadow for dark mode */
   }
 
-  /* --- สไตล์ Dark Mode สำหรับ Elements ทั่วไป และ Spinner App --- */
-  h1 { color: #e0e0e0; }
-  .mode-instruction { color: #bbb; }
-  .mode-instruction i { color: #64b5f6; }
-  .mode-btn { background: #444; color: #e0e0e0; }
-  .mode-btn.active { background: #1976D2; color: #e0e0e0; box-shadow: 0 2px 5px rgba(25, 118, 210, 0.5); }
-  .mode-btn:hover:not(.active) { background: #555; }
-  .help-btn { background-color: #444; color: #bbb; border-color: #666; }
-  .help-btn:hover { background-color: #64b5f6; color: #1e1e1e; border-color: #64b5f6; }
-  #logout-button { background-color: #ef5350; color: #1e1e1e; border-color: #e53935;} /* สีแดงอ่อน */
-  #logout-button:hover { background-color: #e53935; border-color: #d32f2f; }
-  #user-display { color: #bbb; } /* สี email/username */
-  .keyword-section label { color: #e0e0e0; }
-  .keyword-section input { background: #444; color: #e0e0e0; border-color: #666; }
-  textarea { background: #444; color: #e0e0e0; border-color: #666; }
-  textarea:focus { border-color: #64b5f6; box-shadow: 0 0 5px rgba(100, 181, 246, 0.6); }
-  button:not(.mode-btn):not(.help-btn):not(.action-btn) { background: #444; color: #e0e0e0; }
-  button:not(.mode-btn):not(.help-btn):not(.action-btn):hover { background: #666; }
-  #copyButton:hover { background-color: #66bb6a; color: #1e1e1e; }
-  #clearButton:hover { background-color: #ef5350; color: #1e1e1e; }
-  .video-link a { color: #64b5f6; }
-  .video-link a:hover { color: #90caf9; }
-  .video-link a:visited { color: #ba68c8; }
+  h1 { color: #f2f2f7; }
+  #auth-container p { color: #8e8e93; } /* Softer gray for subtext */
+  #auth-container h2 { color: #ebebf5; }
+  #auth-container h2 i { color: #589afc; } /* Brighter blue for icons */
 
-  /* --- สไตล์ Dark Mode สำหรับ Modal (Help) --- */
-  .modal-content { background-color: #333; color: #e0e0e0; border-color: #555; }
-  .close-btn { color: #aaa; }
-  .close-btn:hover, .close-btn:focus { color: #fff; }
-  .modal-content h2 { color: #64b5f6; }
-  #helpContent div { border-bottom-color: #555; }
-  #helpContent h3 { color: #e0e0e0; }
-  #helpContent h3 i { color: #bbb; }
-  #helpContent p { color: #ccc; }
-  #helpContent code { background-color: #444; color: #ffab91; }
-
-  /* --- สไตล์ Dark Mode สำหรับ Toast --- */
-  .toast-notification { background-color: rgba(240, 240, 240, 0.9); color: #1e1e1e; box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2); }
-
-  /* --- สไตล์ Dark Mode สำหรับหน้า Login/Register --- */
-  #auth-container h1 { color: #64b5f6; } /* สีฟ้าอ่อน */
-  #auth-container p { color: #bbb; }
-  #auth-container h2 { color: #e0e0e0; border-bottom-color: #555; }
-  #auth-container hr { background-color: #555; }
-  #auth-container label { color: #ccc; }
+  #auth-container label { color: #aeaeb2; }
   #auth-container input[type="text"],
   #auth-container input[type="email"],
   #auth-container input[type="password"] {
-    border-color: #666;
-    background-color: #444;
-    color: #e0e0e0;
+    border-color: #48484a; /* Darker border */
+    background-color: #3a3a3c; /* Dark input background */
+    color: #f2f2f7; /* Light text in inputs */
+  }
+  #auth-container input[type="text"]::placeholder,
+  #auth-container input[type="email"]::placeholder,
+  #auth-container input[type="password"]::placeholder {
+    color: #8e8e93; /* Placeholder color for dark mode */
   }
   #auth-container input[type="text"]:focus,
   #auth-container input[type="email"]:focus,
   #auth-container input[type="password"]:focus {
-    border-color: #64b5f6;
-    box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.3);
+    border-color: #589afc; /* Brighter blue for focus */
+    background-color: #3a3a3c; /* Keep dark on focus */
+    box-shadow: 0 0 0 3px rgba(88, 154, 252, 0.25); /* Focus glow */
   }
-  #login-button { background-color: #1976D2; } /* สีน้ำเงินเข้ม */
-  #login-button:hover { background-color: #1565C0; }
-  #register-button { background-color: #388E3C; } /* สีเขียวเข้ม */
-  #register-button:hover { background-color: #2E7D32; }
-  #auth-error { color: #ef5350; } /* สีแดงอ่อน */
 
-} /* ปิด @media dark */
+  #login-button { background-color: #589afc; }
+  #login-button:hover { background-color: #3b8bfb; }
+  #register-button { background-color: #30d158; } /* Brighter green */
+  #register-button:hover { background-color: #29c14f; }
+
+  .form-switcher-text { color: #8e8e93; }
+  .form-switcher-text a { color: #589afc; }
+  #auth-error { color: #ff453a; } /* Brighter red for errors */
+
+  /* App Specific Dark Mode */
+  .header-with-help h1 { color: #f2f2f7; }
+  .help-btn {
+    background-color: #3a3a3c;
+    color: #aeaeb2;
+    border-color: #48484a;
+  }
+  .help-btn:hover {
+    background-color: #4a4a4c;
+    color: #f2f2f7;
+    border-color: #58585a;
+  }
+  #logout-button {
+    background-color: #ff453a; /* Brighter red */
+    color: white;
+    border-color: #ff453a;
+  }
+  #logout-button:hover {
+    background-color: #ff2d21;
+    border-color: #ff2d21;
+  }
+  #user-display { color: #aeaeb2; }
+
+  .mode-instruction {
+    color: #aeaeb2;
+    background-color: #3a3a3c;
+  }
+  .mode-instruction i { color: #589afc; }
+
+  .mode-btn {
+    background: #3a3a3c;
+    color: #f2f2f7;
+    border-color: #48484a;
+  }
+  .mode-btn.active {
+    background: #589afc;
+    color: #fff; /* White text on active blue button */
+    border-color: #3b8bfb;
+    box-shadow: 0 2px 4px rgba(88, 154, 252, 0.4);
+  }
+  .mode-btn:hover:not(.active) {
+    background: #4a4a4c;
+    border-color: #58585a;
+  }
+
+  .keyword-section {
+    background-color: #3a3a3c;
+  }
+  .keyword-section label { color: #f2f2f7; }
+  .keyword-section input {
+    background: #4a4a4c;
+    color: #f2f2f7;
+    border-color: #58585a;
+  }
+   .keyword-section input::placeholder { color: #8e8e93; }
+  .keyword-section input:focus {
+    border-color: #589afc;
+    background-color: #4a4a4c;
+    box-shadow: 0 0 0 2px rgba(88, 154, 252, 0.2);
+  }
+
+  textarea {
+    background: #3a3a3c;
+    color: #f2f2f7;
+    border-color: #48484a;
+  }
+  textarea::placeholder { color: #8e8e93; }
+  textarea:focus {
+    border-color: #589afc;
+    box-shadow: 0 0 0 3px rgba(88, 154, 252, 0.25);
+  }
+
+  .action-buttons button {
+    background-color: #3a3a3c;
+    color: #f2f2f7;
+    border-color: #48484a;
+  }
+  .action-buttons button:hover {
+    border-color: #58585a;
+    background-color: #4a4a4c;
+  }
+  #copyButton:hover {
+    background-color: #30d158; /* Green for copy */
+    border-color: #30d158;
+    color: white;
+  }
+  #clearButton:hover {
+    background-color: #ff453a; /* Red for clear */
+    border-color: #ff453a;
+    color: white;
+  }
+
+  .video-link a { color: #589afc; }
+  .video-link a:hover { color: #70aeff; }
+
+  /* Modal Dark Mode */
+  .modal-content {
+    background-color: #3a3a3c;
+    color: #f2f2f7;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  }
+  .close-btn { color: #aeaeb2; }
+  .close-btn:hover, .close-btn:focus { color: #f2f2f7; }
+  .modal-content h2 { color: #589afc; }
+  #helpContent div { border-bottom-color: #48484a; }
+  #helpContent h3 { color: #ebebf5; }
+  #helpContent h3 i { color: #aeaeb2; }
+  #helpContent p { color: #aeaeb2; }
+  #helpContent code {
+    background-color: #4a4a4c;
+    color: #ffb0a7; /* Lighter red for code in dark mode */
+  }
+
+  /* Toast Dark Mode */
+  .toast-notification {
+    background-color: rgba(242, 242, 247, 0.9); /* Light toast for dark background */
+    color: #1c1c1e; /* Dark text for light toast */
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+  }
+}
