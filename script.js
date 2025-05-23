@@ -343,4 +343,34 @@ if ('serviceWorker' in navigator) { // เช็คว่า Browser รอง�
   console.log('Service Worker is not supported by this browser.');
 }
 
+// ======== Script for Toggling Login/Register Forms ========
+const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
+const showRegisterLink = document.getElementById('show-register-link');
+const showLoginLink = document.getElementById('show-login-link');
+
+if (showRegisterLink && loginForm && registerForm) {
+  showRegisterLink.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+    if(authErrorDisplay) authErrorDisplay.textContent = ''; // Clear any previous auth errors
+    if(registerUsernameInput) registerUsernameInput.focus(); // Focus on the first field of register form
+  });
+}
+
+if (showLoginLink && loginForm && registerForm) {
+  showLoginLink.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent default link behavior
+    registerForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    if(authErrorDisplay) authErrorDisplay.textContent = ''; // Clear any previous auth errors
+    if(loginUsernameInput) loginUsernameInput.focus(); // Focus on the first field of login form
+  });
+}
+
+// Ensure the auth container logic in onAuthStateChanged still works well with this.
+// The initial display of login-form (block) and register-form (none) is set in index.html.
+// This script just handles the toggling.
+
 // ---- จบโค้ดที่เพิ่ม ----
