@@ -1,163 +1,147 @@
-/* General Styles */
+/* General Styles - New Vibe! */
 body {
-  font-family: 'Inter', 'Arial', sans-serif; /* Modern, clean font */
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Modern, widely available fonts */
   margin: 0;
   padding: 20px;
-  background-color: #f4f7f6; /* Light, calming background */
+  background-color: #eef1f5; /* Lighter, cooler background */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   box-sizing: border-box;
-  color: #333; /* Default text color for light mode */
+  color: #2c3e50; /* Dark blue-grey text */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Main Container for Auth and App */
+/* Main Container */
 .container {
   width: 90%;
-  padding: 30px 35px; /* Adjusted padding */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Softer, more diffused shadow */
-  border-radius: 16px; /* Modern rounded corners */
+  max-width: 700px; /* Optimal for readability */
+  padding: 25px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(41, 50, 65, 0.1); /* Softer, deeper shadow */
+  border-radius: 20px; /* More rounded */
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Consistent gap */
+  gap: 25px; /* Increased gap for better spacing */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Authentication Container Specifics */
+/* --- Authentication Styles (Kept for potential future use, but visually updated) --- */
 #auth-container {
-  max-width: 420px; /* Optimal width for forms */
-  background-color: #ffffff; /* Clean white background */
-  margin: 40px auto; /* Centering */
-}
-
-/* App View Specifics */
-.app-view {
-  max-width: 800px; /* Wider for app content */
-  background-color: #ffffff;
-}
-
-/* Headings */
-h1 {
-  text-align: center;
-  font-size: 1.8rem; /* Responsive font size */
-  font-weight: 600; /* Semi-bold */
-  color: #2c3e50; /* Deep cool blue-gray */
-  margin-bottom: 8px; /* Reduced margin */
+  max-width: 400px;
+  background-color: #fff;
+  margin: 30px auto;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
 }
 
 #auth-container h1 {
-  font-size: 1.7rem; /* Slightly smaller for auth heading */
-  margin-bottom: 12px;
-}
-
-#auth-container p { /* Subtext in auth */
+  font-size: 1.6rem;
+  color: #1a2533;
+  margin-bottom: 10px;
   text-align: center;
-  color: #7f8c8d; /* Softer gray */
-  margin-bottom: 25px; /* Space before form */
-  font-size: 0.95rem;
-  line-height: 1.6;
 }
 
-#auth-container h2 { /* Login / Register titles */
-  font-size: 1.4rem;
-  font-weight: 500; /* Medium weight */
+#auth-container p {
+  text-align: center;
+  color: #667281;
   margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+#auth-container h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
   text-align: center;
-  color: #34495e; /* Another shade of cool blue-gray */
-  border-bottom: none;
-  padding-bottom: 0;
+  color: #2c3e50;
 }
 
-#auth-container h2 i { /* Icons in form headings */
+#auth-container h2 i {
   margin-right: 8px;
-  color: #3498db; /* Accent color for icons */
+  color: #007aff; /* Brighter accent */
 }
 
-/* Input Groups and Labels */
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
 #auth-container label {
   display: block;
-  margin-bottom: 7px; /* Slightly reduced margin */
+  margin-bottom: 6px;
   font-weight: 500;
-  font-size: 0.9rem;
-  color: #555e68; /* Darker gray for better readability */
+  font-size: 0.85rem;
+  color: #4a5568;
 }
 
-/* Input Fields */
 #auth-container input[type="text"],
 #auth-container input[type="email"],
 #auth-container input[type="password"] {
   width: 100%;
-  padding: 13px 16px; /* Adjusted padding for a sleeker look */
-  border: 1px solid #dfe6e9; /* Light, subtle border */
-  border-radius: 10px; /* Consistent rounded corners */
-  background-color: #f8f9fa; /* Very light off-white */
-  color: #333;
-  font-size: 0.95rem; /* Slightly smaller font for inputs */
+  padding: 12px 15px;
+  border: 1px solid #d8dde3;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  font-size: 0.9rem;
   box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 #auth-container input[type="text"]:focus,
 #auth-container input[type="email"]:focus,
 #auth-container input[type="password"]:focus {
   outline: none;
-  border-color: #3498db; /* Accent color on focus */
-  background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15); /* Soft focus glow */
+  border-color: #007aff;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
 }
 
-/* Action Buttons (Login, Register) */
 #auth-container .action-btn {
   width: 100%;
-  padding: 13px 20px; /* Adjusted padding */
+  padding: 12px 18px;
   border: none;
   border-radius: 10px;
-  font-size: 1rem; /* Clear font size */
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  text-transform: none; /* Keeping it natural */
-  letter-spacing: 0.3px; /* Subtle letter spacing */
+  gap: 8px;
 }
 
 #login-button {
-  background-color: #3498db; /* Primary action blue */
+  background-color: #007aff; /* Primary Blue */
   color: white;
 }
 #login-button:hover {
-  background-color: #2980b9; /* Darker shade on hover */
+  background-color: #005ecb;
 }
 
-#register-button { /* Specific class for register button if needed */
-  background-color: #2ecc71; /* Friendly green for sign-up */
+#register-button {
+  background-color: #34c759; /* Vibrant Green */
   color: white;
 }
 #register-button:hover {
-  background-color: #27ae60; /* Darker green */
+  background-color: #2aa248;
 }
 
 #auth-container .action-btn:active {
-  transform: scale(0.98); /* Click feedback */
+  transform: scale(0.97);
 }
 
-/* Form Switcher Text (e.g., "Don't have an account?") */
 .form-switcher-text {
   text-align: center;
-  margin-top: 20px; /* Space above the link */
-  font-size: 0.85rem; /* Smaller text */
+  margin-top: 18px;
+  font-size: 0.8rem;
   color: #555e68;
 }
 .form-switcher-text a {
-  color: #3498db; /* Accent color for link */
+  color: #007aff;
   text-decoration: none;
   font-weight: 500;
 }
@@ -165,228 +149,269 @@ h1 {
   text-decoration: underline;
 }
 
-/* Auth Error Message */
 #auth-error {
-  color: #e74c3c; /* Standard error red */
+  color: #ff3b30; /* Vibrant Red for errors */
   text-align: center;
-  margin-top: 15px; /* Reduced margin */
+  margin-top: 12px;
   font-weight: 500;
-  min-height: 1.2em; /* Ensure space even if empty */
-  font-size: 0.9rem;
+  min-height: 1.1em;
+  font-size: 0.85rem;
 }
+/* --- End of Auth Styles --- */
 
 
 /* --- Styles for the Main App (#app-container) --- */
 .header-with-help {
   display: flex;
-  justify-content: space-between; /* Align title left, buttons right */
+  justify-content: space-between;
   align-items: center;
   gap: 15px;
-  margin-bottom: 15px; /* Increased margin */
-  flex-wrap: wrap;
+  margin-bottom: 10px; /* Reduced margin */
 }
 .header-with-help h1 {
-    margin-bottom: 0; /* Remove bottom margin from h1 inside this div */
-    text-align: left; /* Align title to the left */
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a2533; /* For light mode */
+  margin-bottom: 0;
+  text-align: center; /* Changed from left to center */
+  flex-grow: 1; /* Added this to make the h1 expand */
+  letter-spacing: -0.5px;
+  /* Make sure to adjust the color if you're editing within a dark mode media query,
+     but text-align and flex-grow are the main things. */
 }
 
-/* Help and Logout Buttons */
-.help-btn {
-  padding: 9px 11px; /* Slightly adjusted padding */
-  font-size: 1.1rem; /* Adjusted icon size */
-  background-color: #f0f0f0;
-  color: #555;
-  border: 1px solid #dcdcdc; /* Softer border */
-  border-radius: 50%; /* Circular buttons */
+/* Help and Action Buttons (like Logout, if it existed) */
+.help-btn /*, #logout-button (if you add it back) */ {
+  padding: 10px; /* Square padding for a circular button */
+  font-size: 1.2rem;
+  background-color: transparent; /* Cleaner look */
+  color: #546e7a; /* Muted icon color */
+  border: 2px solid #dbe0e4; /* Subtle border */
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.25s ease;
-  line-height: 1;
+  line-height: 1; /* Ensure icon is centered */
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 40px; /* Explicit width */
+  height: 40px; /* Explicit height */
 }
 .help-btn:hover {
-  background-color: #e0e0e0;
-  color: #333;
-  border-color: #c0c0c0;
-  transform: translateY(-1px); /* Subtle lift */
+  background-color: #f0f4f8;
+  color: #007aff; /* Accent on hover */
+  border-color: #007aff;
+  transform: rotate(15deg); /* Playful rotation */
 }
+/*
 #logout-button {
-    background-color: #e74c3c; /* Consistent red for logout */
-    color: white;
-    border-color: #e74c3c;
+    border-color: #ff3b30;
+    color: #ff3b30;
 }
 #logout-button:hover {
-    background-color: #c0392b; /* Darker red on hover */
-    border-color: #c0392b;
+    background-color: #ff3b30;
+    color: white;
+    border-color: #ff3b30;
 }
+*/
 #user-display {
-    font-size: 0.9rem;
-    color: #555;
-    margin-right: 5px;
+  font-size: 0.9rem;
+  color: #555e68;
+  margin-right: 5px;
+  font-weight: 500;
 }
 
 /* Mode Instruction */
 .mode-instruction {
   text-align: center;
-  font-size: 1.05rem; /* Slightly adjusted */
-  color: #555;
+  font-size: 1rem;
+  color: #546e7a;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px;
-  background-color: #f9f9f9; /* Subtle background */
-  border-radius: 8px;
+  padding: 12px 15px;
+  background-color: #f8f9fc; /* Very light blue/grey */
+  border-radius: 12px; /* More rounded */
+  border: 1px solid #e8ecf1;
 }
-.mode-instruction i { color: #3498db; }
+.mode-instruction i { color: #007aff; font-size: 1.2em; }
 
 /* Mode Buttons */
 .mode-buttons {
   display: flex;
-  gap: 12px; /* Adjusted gap */
+  gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
 }
 .mode-btn {
-  padding: 10px 18px; /* Adjusted padding */
-  border: 1px solid transparent; /* Prepare for active state border */
-  background: #e9ecef; /* Lighter gray */
-  color: #495057; /* Darker text for better contrast */
-  border-radius: 8px;
+  padding: 12px 22px; /* More padding for a chunkier feel */
+  border: 2px solid transparent;
+  background: #f0f4f8; /* Light grey, distinct from page bg */
+  color: #37474f; /* Darker text */
+  border-radius: 25px; /* Pill-shaped */
   cursor: pointer;
-  font-size: 1rem; /* Adjusted font size */
-  font-weight: 500; /* Medium weight */
+  font-size: 0.95rem;
+  font-weight: 600; /* Bolder text */
   transition: all 0.25s ease;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px; /* More space for icon */
 }
+.mode-btn i { font-size: 1.1em; }
 .mode-btn.active {
-  background: #3498db;
+  background: #007aff; /* Vibrant Blue */
   color: #fff;
-  border-color: #2980b9; /* Border for active state */
-  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+  border-color: #007aff;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25); /* More prominent shadow */
+  transform: translateY(-2px); /* Lift effect */
 }
 .mode-btn:hover:not(.active) {
-  background: #ced4da; /* Darker hover for non-active */
-  border-color: #adb5bd;
+  background: #e1e8f0;
+  border-color: #cdd5e0;
+  transform: translateY(-1px);
 }
 
 /* Keyword Section */
 .keyword-section {
-  display: flex; /* Keep as flex for JS toggle */
+  display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  max-width: 450px;
-  margin: 0 auto;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  max-width: 480px; /* Slightly wider */
+  margin: 5px auto; /* Reduced top/bottom margin */
+  padding: 15px;
+  background-color: #f8f9fc;
+  border-radius: 12px;
+  border: 1px solid #e8ecf1;
 }
 .keyword-section label {
-  font-size: 1rem;
-  color: #495057;
+  font-size: 0.95rem;
+  color: #37474f;
+  font-weight: 500;
   white-space: nowrap;
 }
+.keyword-section label i { margin-right: 5px; color: #007aff; }
 .keyword-section input {
-  padding: 9px 12px; /* Adjusted padding */
-  border: 1px solid #ced4da;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px solid #dbe0e4;
+  border-radius: 8px;
   flex-grow: 1;
   font-size: 0.95rem;
   background-color: #fff;
+  color: #2c3e50;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.keyword-section input::placeholder {
+    color: #90a4ae;
 }
 .keyword-section input:focus {
-  border-color: #3498db;
+  border-color: #007aff;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.15);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15); /* Focus glow */
 }
 
 /* Input/Output Textareas */
 .io-section {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
   align-items: center;
   width: 100%;
 }
 textarea {
   width: 100%;
-  max-width: 100%;
-  height: 120px;
-  padding: 12px 15px; /* Adjusted padding */
-  border: 1px solid #ced4da;
-  border-radius: 8px;
+  max-width: 100%; /* Ensure it doesn't overflow container */
+  height: 130px; /* Slightly taller */
+  padding: 14px 18px;
+  border: 1px solid #dbe0e4;
+  border-radius: 12px; /* More rounded */
   font-size: 1rem;
+  line-height: 1.5; /* Improved readability */
   resize: vertical;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: #fdfdff; /* Slightly off-white */
+  color: #2c3e50;
+}
+textarea::placeholder {
+    color: #90a4ae;
 }
 textarea:focus {
-  border-color: #3498db;
+  border-color: #007aff;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2); /* Larger focus glow */
+  background-color: #fff;
+}
+#outputText {
+    background-color: #f8f9fc; /* Differentiate output slightly */
 }
 
 /* Action Buttons (Copy, Clear) */
 .action-buttons {
   display: flex;
-  gap: 12px;
+  gap: 15px; /* More space */
   justify-content: center;
 }
-/* General style for Copy/Clear buttons */
 .action-buttons button {
   cursor: pointer;
-  padding: 10px 18px; /* Adjusted padding */
-  border: 1px solid #ced4da; /* Subtle border */
-  background-color: #f8f9fa; /* Light background */
-  color: #495057; /* Darker text */
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  font-size: 1rem;
-  font-weight: 500;
+  padding: 10px 20px;
+  border: 2px solid; /* Prepare for colored border on hover */
+  background-color: #fff;
+  border-radius: 25px; /* Pill shape */
+  transition: all 0.25s ease;
+  font-size: 0.95rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 }
-.action-buttons button:hover {
-  border-color: #adb5bd;
-  background-color: #e9ecef;
-  transform: translateY(-1px);
-}
-.action-buttons button:active {
-  transform: scale(0.97);
+.action-buttons button i { font-size: 1.1em; }
+
+#copyButton {
+  color: #28a745; /* Green */
+  border-color: #28a745;
 }
 #copyButton:hover {
-  background-color: #2ecc71; /* Green for copy */
-  border-color: #2ecc71;
+  background-color: #28a745;
   color: white;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 3px 8px rgba(40, 167, 69, 0.2);
+}
+
+#clearButton {
+  color: #dc3545; /* Red */
+  border-color: #dc3545;
 }
 #clearButton:hover {
-  background-color: #e74c3c; /* Red for clear */
-  border-color: #e74c3c;
+  background-color: #dc3545;
   color: white;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 3px 8px rgba(220, 53, 69, 0.2);
+}
+.action-buttons button:active {
+  transform: scale(0.96);
 }
 
 /* Video Link */
 .video-link {
   text-align: center;
-  font-size: 1rem; /* Adjusted size */
+  font-size: 0.95rem;
+  margin-top: 10px; /* Added some top margin */
 }
 .video-link a {
-  color: #3498db;
+  color: #007aff;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 .video-link a:hover {
-  color: #2980b9;
+  color: #005ecb; /* Darker blue on hover */
   text-decoration: underline;
 }
+.video-link i { margin-right: 5px; }
 
 /* Modal (Help) */
 .modal {
@@ -398,268 +423,278 @@ textarea:focus {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.5); /* Slightly darker overlay */
-  animation: fadeInModal 0.3s ease-out;
+  background-color: rgba(20, 30, 40, 0.6); /* Darker, bluish overlay */
+  animation: fadeInModal 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Smoother animation */
 }
 .modal-content {
   background-color: #ffffff;
-  color: #333;
-  margin: 10% auto;
-  padding: 25px 30px;
-  border: none; /* Removed border */
+  color: #2c3e50;
+  margin: 8% auto; /* Adjusted for better vertical centering */
+  padding: 30px 35px; /* More padding */
   width: 90%;
-  max-width: 550px;
-  border-radius: 12px; /* Softer radius */
+  max-width: 600px; /* Slightly wider modal */
+  border-radius: 16px;
   position: relative;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.15); /* Enhanced shadow */
-  animation: slideInModal 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  animation: slideInModal 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .close-btn {
-  color: #aaa;
+  color: #90a4ae; /* Muted close button */
   position: absolute;
-  top: 12px; /* Adjusted position */
-  right: 15px;
-  font-size: 26px; /* Adjusted size */
+  top: 15px;
+  right: 20px;
+  font-size: 30px;
   font-weight: bold;
   line-height: 1;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 .close-btn:hover, .close-btn:focus {
-  color: #333;
+  color: #ff3b30; /* Red on hover for close */
+  transform: scale(1.1) rotate(90deg);
 }
 .modal-content h2 {
   margin-top: 0;
-  color: #2980b9; /* Darker blue for modal title */
+  color: #007aff;
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.4rem;
+  margin-bottom: 25px;
+  font-size: 1.6rem; /* Larger modal title */
 }
-.modal-content h2 i { margin-right: 8px; }
+.modal-content h2 i { margin-right: 10px; }
 #helpContent div {
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #f0f0f0; /* Lighter separator */
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #eef1f5; /* Lighter separator */
 }
 #helpContent div:last-child {
   border-bottom: none;
   margin-bottom: 0;
 }
 #helpContent h3 {
-  margin-bottom: 8px;
-  color: #34495e; /* Consistent heading color */
-  font-size: 1.15rem; /* Adjusted size */
+  margin-bottom: 10px;
+  color: #1a2533; /* Darker subheading */
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
-#helpContent h3 i { color: #555; }
+#helpContent h3 i { color: #546e7a; } /* Icon color for help sections */
 #helpContent p {
   margin: 0;
-  line-height: 1.6;
-  font-size: 0.95rem; /* Adjusted size */
-  color: #555;
+  line-height: 1.65; /* Improved line height */
+  font-size: 0.95rem;
+  color: #4a5568; /* Softer text color */
 }
 #helpContent code {
-  background-color: #eef1f2; /* Lighter code background */
-  padding: 3px 6px;
-  border-radius: 5px; /* Softer radius */
-  font-family: 'Courier New', Courier, monospace;
+  background-color: #eef1f5;
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Courier New', Courier, monospace; /* Better code font */
   font-size: 0.9em;
-  color: #c7254e; /* Consistent code color */
+  color: #d63384; /* Pinkish for code */
+  border: 1px solid #e0e6eb;
 }
 
 /* Toast Notification */
 .toast-notification {
   position: fixed;
-  bottom: 30px;
+  bottom: 35px; /* Higher up */
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(44, 62, 80, 0.9); /* Darker, more modern toast */
+  background-color: rgba(26, 37, 51, 0.95); /* Dark, slightly transparent */
   color: #fff;
-  padding: 12px 22px; /* Adjusted padding */
-  border-radius: 25px; /* Pill shape */
-  font-size: 0.95rem;
+  padding: 14px 25px; /* More padding */
+  border-radius: 30px; /* Very rounded */
+  font-size: 0.9rem;
+  font-weight: 500;
   z-index: 10000;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); /* Softer shadow */
+  box-shadow: 0px 5px 15px rgba(26, 37, 51, 0.3); /* Softer shadow */
   white-space: nowrap;
-  animation: fadeInOutToast 2.8s ease-in-out forwards; /* Slightly longer duration */
+  animation: fadeInOutToast 3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
+.toast-notification.error-toast { /* Specific class for error toasts */
+    background-color: rgba(255, 59, 48, 0.95); /* iOS-like red for errors */
+}
+
 
 /* Animations */
 @keyframes fadeInModal { from {opacity: 0;} to {opacity: 1;} }
-@keyframes slideInModal { from {transform: translateY(-25px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+@keyframes slideInModal { from {transform: translateY(-30px) scale(0.95); opacity: 0;} to {transform: translateY(0) scale(1); opacity: 1;} }
 @keyframes fadeInOutToast {
-  0% { opacity: 0; transform: translate(-50%, 10px); }
+  0% { opacity: 0; transform: translate(-50%, 20px); }
   10% { opacity: 1; transform: translate(-50%, 0); }
   90% { opacity: 1; transform: translate(-50%, 0); }
-  100% { opacity: 0; transform: translate(-50%, 10px); }
+  100% { opacity: 0; transform: translate(-50%, 20px); }
 }
 
-/* --- Dark Mode --- */
+/* --- Dark Mode - Sleek & Modern --- */
 @media (prefers-color-scheme: dark) {
   body {
-    background: #1c1c1e; /* iOS-like dark background */
-    color: #f2f2f7; /* Light text for dark mode */
+    background: #121212; /* True dark */
+    color: #e0e0e0; /* Light grey text */
   }
 
-  .container, #auth-container, .app-view {
-    background: #2c2c2e; /* Darker component background */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); /* More pronounced shadow for dark mode */
+  .container, #auth-container {
+    background: #1e1e1e; /* Slightly lighter dark for cards */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
   }
 
-  h1 { color: #f2f2f7; }
-  #auth-container p { color: #8e8e93; } /* Softer gray for subtext */
-  #auth-container h2 { color: #ebebf5; }
-  #auth-container h2 i { color: #589afc; } /* Brighter blue for icons */
+  .header-with-help h1, #auth-container h1, #auth-container h2 { color: #f5f5f5; }
+  #auth-container p { color: #a0a0a0; }
+  #auth-container h2 i { color: #0a84ff; } /* Brighter blue for dark mode */
 
-  #auth-container label { color: #aeaeb2; }
+  #auth-container label { color: #b0b0b0; }
   #auth-container input[type="text"],
   #auth-container input[type="email"],
   #auth-container input[type="password"] {
-    border-color: #48484a; /* Darker border */
-    background-color: #3a3a3c; /* Dark input background */
-    color: #f2f2f7; /* Light text in inputs */
+    border-color: #383838;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
   }
   #auth-container input[type="text"]::placeholder,
   #auth-container input[type="email"]::placeholder,
   #auth-container input[type="password"]::placeholder {
-    color: #8e8e93; /* Placeholder color for dark mode */
+    color: #757575;
   }
   #auth-container input[type="text"]:focus,
   #auth-container input[type="email"]:focus,
   #auth-container input[type="password"]:focus {
-    border-color: #589afc; /* Brighter blue for focus */
-    background-color: #3a3a3c; /* Keep dark on focus */
-    box-shadow: 0 0 0 3px rgba(88, 154, 252, 0.25); /* Focus glow */
+    border-color: #0a84ff;
+    background-color: #2c2c2c;
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
   }
 
-  #login-button { background-color: #589afc; }
-  #login-button:hover { background-color: #3b8bfb; }
-  #register-button { background-color: #30d158; } /* Brighter green */
-  #register-button:hover { background-color: #29c14f; }
+  #login-button { background-color: #0a84ff; }
+  #login-button:hover { background-color: #0071e3; }
+  #register-button { background-color: #30d158; }
+  #register-button:hover { background-color: #28b34b; }
 
-  .form-switcher-text { color: #8e8e93; }
-  .form-switcher-text a { color: #589afc; }
-  #auth-error { color: #ff453a; } /* Brighter red for errors */
+  .form-switcher-text { color: #a0a0a0; }
+  .form-switcher-text a { color: #0a84ff; }
+  #auth-error { color: #ff453a; }
 
   /* App Specific Dark Mode */
-  .header-with-help h1 { color: #f2f2f7; }
   .help-btn {
-    background-color: #3a3a3c;
-    color: #aeaeb2;
-    border-color: #48484a;
+    color: #b0b0b0;
+    border-color: #383838;
   }
   .help-btn:hover {
-    background-color: #4a4a4c;
-    color: #f2f2f7;
-    border-color: #58585a;
+    background-color: #2c2c2c;
+    color: #0a84ff;
+    border-color: #0a84ff;
   }
-  #logout-button {
-    background-color: #ff453a; /* Brighter red */
-    color: white;
-    border-color: #ff453a;
-  }
-  #logout-button:hover {
-    background-color: #ff2d21;
-    border-color: #ff2d21;
-  }
-  #user-display { color: #aeaeb2; }
+  #user-display { color: #b0b0b0; }
 
   .mode-instruction {
-    color: #aeaeb2;
-    background-color: #3a3a3c;
+    color: #b0b0b0;
+    background-color: #2c2c2c;
+    border-color: #383838;
   }
-  .mode-instruction i { color: #589afc; }
+  .mode-instruction i { color: #0a84ff; }
 
   .mode-btn {
-    background: #3a3a3c;
-    color: #f2f2f7;
-    border-color: #48484a;
+    background: #2c2c2c;
+    color: #e0e0e0;
+    /* border-color: #383838; */ /* Using transparent border, active state adds color */
   }
   .mode-btn.active {
-    background: #589afc;
-    color: #fff; /* White text on active blue button */
-    border-color: #3b8bfb;
-    box-shadow: 0 2px 4px rgba(88, 154, 252, 0.4);
+    background: #0a84ff;
+    color: #fff;
+    border-color: #0a84ff;
+    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
   }
   .mode-btn:hover:not(.active) {
-    background: #4a4a4c;
-    border-color: #58585a;
+    background: #3a3a3a;
+    /* border-color: #4a4a4a; */
   }
 
   .keyword-section {
-    background-color: #3a3a3c;
+    background-color: #2c2c2c;
+    border-color: #383838;
   }
-  .keyword-section label { color: #f2f2f7; }
+  .keyword-section label { color: #e0e0e0; }
+  .keyword-section label i { color: #0a84ff; }
   .keyword-section input {
-    background: #4a4a4c;
-    color: #f2f2f7;
-    border-color: #58585a;
+    background: #3a3a3a;
+    color: #e0e0e0;
+    border-color: #4a4a4a;
   }
-   .keyword-section input::placeholder { color: #8e8e93; }
+   .keyword-section input::placeholder { color: #757575; }
   .keyword-section input:focus {
-    border-color: #589afc;
-    background-color: #4a4a4c;
-    box-shadow: 0 0 0 2px rgba(88, 154, 252, 0.2);
+    border-color: #0a84ff;
+    background-color: #3a3a3a;
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
   }
 
   textarea {
-    background: #3a3a3c;
-    color: #f2f2f7;
-    border-color: #48484a;
+    background: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #383838;
   }
-  textarea::placeholder { color: #8e8e93; }
+  textarea::placeholder { color: #757575; }
   textarea:focus {
-    border-color: #589afc;
-    box-shadow: 0 0 0 3px rgba(88, 154, 252, 0.25);
+    border-color: #0a84ff;
+    background-color: #252525; /* Slightly darker on focus */
+    box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25);
   }
+   #outputText {
+    background-color: #292929; /* Differentiate output slightly */
+}
+
 
   .action-buttons button {
-    background-color: #3a3a3c;
-    color: #f2f2f7;
-    border-color: #48484a;
+    background-color: #1e1e1e; /* Match container bg */
   }
-  .action-buttons button:hover {
-    border-color: #58585a;
-    background-color: #4a4a4c;
+  #copyButton {
+    color: #30d158; /* Brighter Green */
+    border-color: #30d158;
   }
   #copyButton:hover {
-    background-color: #30d158; /* Green for copy */
-    border-color: #30d158;
-    color: white;
+    background-color: #30d158;
+    color: #121212; /* Dark text on green bg */
+    box-shadow: 0 3px 8px rgba(48, 209, 88, 0.25);
+  }
+  #clearButton {
+    color: #ff453a; /* Brighter Red */
+    border-color: #ff453a;
   }
   #clearButton:hover {
-    background-color: #ff453a; /* Red for clear */
-    border-color: #ff453a;
-    color: white;
+    background-color: #ff453a;
+    color: #121212; /* Dark text on red bg */
+    box-shadow: 0 3px 8px rgba(255, 69, 58, 0.25);
   }
 
-  .video-link a { color: #589afc; }
-  .video-link a:hover { color: #70aeff; }
+  .video-link a { color: #0a84ff; }
+  .video-link a:hover { color: #409cff; }
 
   /* Modal Dark Mode */
+  .modal { background-color: rgba(0,0,0,0.75); } /* Darker overlay */
   .modal-content {
-    background-color: #3a3a3c;
-    color: #f2f2f7;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    background-color: #252525; /* Darker modal */
+    color: #e0e0e0;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.5);
   }
-  .close-btn { color: #aeaeb2; }
-  .close-btn:hover, .close-btn:focus { color: #f2f2f7; }
-  .modal-content h2 { color: #589afc; }
-  #helpContent div { border-bottom-color: #48484a; }
-  #helpContent h3 { color: #ebebf5; }
-  #helpContent h3 i { color: #aeaeb2; }
-  #helpContent p { color: #aeaeb2; }
+  .close-btn { color: #757575; }
+  .close-btn:hover, .close-btn:focus { color: #ff453a; }
+  .modal-content h2 { color: #0a84ff; }
+  #helpContent div { border-bottom-color: #383838; }
+  #helpContent h3 { color: #f5f5f5; }
+  #helpContent h3 i { color: #a0a0a0; }
+  #helpContent p { color: #b0b0b0; }
   #helpContent code {
-    background-color: #4a4a4c;
-    color: #ffb0a7; /* Lighter red for code in dark mode */
+    background-color: #3a3a3a;
+    color: #ffab73; /* Light orange/pink for code */
+    border-color: #4a4a4a;
   }
 
   /* Toast Dark Mode */
   .toast-notification {
-    background-color: rgba(242, 242, 247, 0.9); /* Light toast for dark background */
-    color: #1c1c1e; /* Dark text for light toast */
-    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+    background-color: rgba(240, 240, 240, 0.95); /* Light toast on dark bg */
+    color: #121212; /* Dark text */
+    box-shadow: 0px 5px 15px rgba(240, 240, 240, 0.15);
+  }
+  .toast-notification.error-toast {
+    background-color: rgba(255, 105, 97, 0.95); /* Lighter, softer red for errors on dark */
+    color: #121212;
   }
 }
