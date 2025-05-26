@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3in1 Key-Emoji-Spinner (Modern Login)</title>
+  <title>3in1 Key-Emoji-Spinner</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" type="image/png" href="./icon-192x192.png">
-  <meta name="theme-color" content="#ffffff"> <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZ1W13YWND"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KZ1W13YWND"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -17,53 +16,10 @@
   </script>
 </head>
 <body>
-
-  <div id="auth-container" class="container">
-    <h1>🔐 ยินดีต้อนรับ! 🔐</h1>
-    <p>กรุณาเข้าสู่ระบบเพื่อใช้งานฟีเจอร์สุดเจ๋งของเรา</p>
-
-    <div id="login-form">
-      <h2><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</h2>
-      <div class="input-group">
-        <label for="login-username">ชื่อผู้ใช้ หรือ อีเมล:</label>
-        <input type="text" id="login-username" placeholder="กรอกชื่อผู้ใช้ หรือ อีเมลของคุณ" required>
-      </div>
-      <div class="input-group">
-        <label for="login-password">รหัสผ่าน:</label>
-        <input type="password" id="login-password" placeholder="กรอกรหัสผ่านของคุณ" required>
-      </div>
-      <button id="login-button" class="action-btn"><i class="fas fa-check"></i> ไปกันเลย!</button>
-      <p class="form-switcher-text">ยังไม่มีบัญชี? <a href="#" id="show-register-link">สมัครสมาชิกที่นี่</a></p>
-    </div>
-
-    <div id="register-form" style="display: none;"> <h2><i class="fas fa-user-plus"></i> สมัครสมาชิกใหม่</h2>
-      <div class="input-group">
-         <label for="register-username">ชื่อผู้ใช้:</label>
-        <input type="text" id="register-username" placeholder="เลือกชื่อผู้ใช้ (อังกฤษ/ตัวเลข, 3+ ตัวอักษร)" required>
-      </div>
-      <div class="input-group">
-         <label for="register-email">อีเมล:</label>
-        <input type="email" id="register-email" placeholder="กรอกอีเมลของคุณ" required>
-      </div>
-       <div class="input-group">
-         <label for="register-password">รหัสผ่าน:</label>
-        <input type="password" id="register-password" placeholder="สร้างรหัสผ่าน (6+ ตัวอักษร)" required>
-      </div>
-      <button id="register-button" class="action-btn register"><i class="fas fa-plus-circle"></i> สมัครเลย!</button>
-      <p class="form-switcher-text">มีบัญชีอยู่แล้ว? <a href="#" id="show-login-link">เข้าสู่ระบบที่นี่</a></p>
-    </div>
-
-    <p id="auth-error"></p>
-  </div>
-
-  <div id="app-container" class="container app-view" style="display: none;">
+  <div class="container">
     <div class="header-with-help">
       <h1>🔐 3in1 Key-Emoji-Spinner 🔐</h1>
-       <div style="display: flex; align-items: center; gap: 10px;">
-         <span id="user-display" style="font-size: 0.9rem; color: #555;"></span>
-         <button id="logout-button" class="help-btn" title="ออกจากระบบ" style="background-color: #e74c3c; color: white;"><i class="fas fa-sign-out-alt"></i></button>
-         <button id="helpBtn" class="help-btn" title="วิธีใช้งาน"><i class="fas fa-question-circle"></i></button>
-       </div>
+      <button id="helpBtn" class="help-btn" title="วิธีใช้จ้าาา"><i class="fas fa-question-circle"></i></button>
     </div>
 
     <div class="mode-instruction">
@@ -76,7 +32,8 @@
       <button id="wordSpinnerModeBtn" class="mode-btn"><i class="fas fa-sync-alt"></i> Word Spinner</button>
     </div>
 
-    <div id="keywordSection" class="keyword-section" style="display: none;"> <label for="keywordInput"><i class="fas fa-search"></i> Keyword:</label>
+    <div id="keywordSection" class="keyword-section">
+      <label for="keywordInput"><i class="fas fa-search"></i> Keyword:</label>
       <input type="text" id="keywordInput" placeholder="ใส่คีย์เวิร์ด... หรือเว้นว่างไว้" />
     </div>
 
@@ -86,48 +43,23 @@
     </div>
 
     <div class="action-buttons">
-      <button id="copyButton"><i class="fas fa-copy"></i> คัดลอก</button>
-      <button id="clearButton"><i class="fas fa-trash"></i> ล้าง</button>
+      <button id="copyButton"><i class="fas fa-copy"></i> Copy</button>
+      <button id="clearButton"><i class="fas fa-trash"></i> Clear</button>
     </div>
 
     <div class="video-link">
       📹 <a href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank">เร็วๆนี้...ดูวิดีโอการใช้งานบน YouTube</a>
     </div>
-  </div>
 
-  <div id="helpModal" class="modal">
+  </div> <div id="helpModal" class="modal">
     <div class="modal-content">
-      <span class="close-btn">×</span>
+      <span class="close-btn">&times;</span>
       <h2><i class="fas fa-info-circle"></i> วิธีใช้งานแต่ละโหมด 🤓</h2>
       <div id="helpContent">
         </div>
     </div>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-  <script>
-    // ======== Firebase Configuration ========
-    const firebaseConfig = {
-      apiKey: "AIzaSyB3ZXwlQlNPKEaryal0YnbarwQoz1DjhEE", // Keep your actual API key
-      authDomain: "in1-e0d50.firebaseapp.com",
-      projectId: "in1-e0d50",
-      storageBucket: "in1-e0d50.appspot.com",
-      messagingSenderId: "785769870882",
-      appId: "1:785769870882:web:42df8ee3b40eced196bc7b",
-      measurementId: "G-GRGVJ1V7BX"
-    };
-
-    // ======== Initialize Firebase ========
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    console.log("Firebase & Firestore Initialized!");
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <script src="script.js"></script>
-
 </body>
 </html>
