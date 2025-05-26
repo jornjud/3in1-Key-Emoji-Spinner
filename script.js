@@ -1,7 +1,9 @@
 /*******************************************************
-  script.js - ฉบับ Username Login + Firestore (แก้ Syntax Error + เปิด sendLog)
-  - แก้ไข Syntax Error ใน WEB_APP_URL
-  - เปิดใช้งาน fetch ใน sendLog
+  script.js - ฉบับ Username Login + Firestore (อัปเดตแก้ไขตามคำแนะนำ)
+  - เพิ่ม createdAt ใน collection usernames ตอน register
+  - เพิ่ม displayName ใน collection users ตอน register
+  - ปรับความยาว username validation ใน client-side เป็น 3-29 ตัวอักษร
+  - ปรับปรุงการจัดการ Error ในส่วน catch ของ registerButton
 ********************************************************/
 
 // ======== Element References (Auth + App) ========
@@ -63,16 +65,17 @@ function showAuthError(message) {
     else if (message.includes('Username already exists')) { displayMessage = `Username นี้มีคนใช้แล้ว!`; }
     else if (message.includes('Username not found')) { displayMessage = `ไม่พบ Username นี้ในระบบ!`; }
     else if (message.includes('Invalid Username format')) { displayMessage = `Username ใช้ได้เฉพาะตัวอักษรภาษาอังกฤษ (a-z), ตัวเลข (0-9) และขีดล่าง (_) เท่านั้น`; }
-    else if (message.includes('Username too short') || message.includes('Username too long')) { displayMessage = `Username ต้องมีความยาว 3-30 ตัวอักษร`; }
+    else if (message.includes('Username too short') || message.includes('Username too long')) { displayMessage = `Username ต้องมีความยาว 3-29 ตัวอักษร`; }
+    // Added for more specific Firestore error during registration
+    else if (message.includes('เกิดข้อผิดพลาดในการบันทึกข้อมูลผู้ใช้')) { displayMessage = 'เกิดข้อผิดพลาดในการบันทึกข้อมูลผู้ใช้ โปรดลองอีกครั้งหรือติดต่อผู้ดูแล';}
 
-    if(authErrorDisplay) authErrorDisplay.textContent = `🚫 ${displayMessage}`; // Check if element exists
+    if(authErrorDisplay) authErrorDisplay.textContent = `🚫 ${displayMessage}`;
     showToast(`🚫 ${displayMessage}`, 4000, true);
 }
 
 // ======== Event Listener ของปุ่ม Register ========
-if (registerButton) { // ตรวจสอบว่า element ปุ่มมีอยู่จริงหรือไม่
+if (registerButton) {
     registerButton.addEventListener('click', async () => {
-        // ตรวจสอบว่า input elements มีอยู่จริงหรือไม่ ก่อนอ่าน value
         if (!registerUsernameInput || !registerEmailInput || !registerPasswordInput) {
             console.error("Register form inputs not found!");
             showAuthError("เกิดข้อผิดพลาดกับฟอร์มลงทะเบียน");
@@ -83,15 +86,15 @@ if (registerButton) { // ตรวจสอบว่า element ปุ่มม�
         const password = registerPasswordInput.value;
         if(authErrorDisplay) authErrorDisplay.textContent = '';
 
-        // Input Validation
         if (!username || !email || !password) { showAuthError("กรุณากรอก Username, Email, และ Password ให้ครบถ้วน"); return; }
         const usernameRegex = /^[a-z0-9_]+$/;
         if (!usernameRegex.test(username)) { showAuthError("Invalid Username format"); return; }
-        if (username.length < 3 || username.length > 30) { showAuthError("Username too short or Username too long"); return; }
+        if (username.length < 3 || username.length > 29) { showAuthError("Username too short or Username too long"); return; }
         if (password.length < 6) { showAuthError("auth/weak-password"); return; }
 
+        let userCredentialForCatch = null; // To check if Auth user was created
+
         try {
-            // 1. เช็ค Username ซ้ำใน Firestore
             console.log(`Checking username: ${username}`);
             const usernameRef = db.collection('usernames').doc(username);
             const usernameDoc = await usernameRef.get();
@@ -101,27 +104,29 @@ if (registerButton) { // ตรวจสอบว่า element ปุ่มม�
             }
             console.log(`Username ${username} is available.`);
 
-            // 3. สร้าง User ใน Firebase Auth
             console.log(`Creating user in Auth for email: ${email}`);
             const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            userCredentialForCatch = userCredential; // Store for catch block
             const user = userCredential.user;
             console.log('Auth user created successfully! UID:', user.uid);
 
-            // 4. บันทึกข้อมูลลง Firestore
             console.log(`Writing user data to Firestore for UID: ${user.uid} and Username: ${username}`);
             const batch = db.batch();
             const userDocRef = db.collection('users').doc(user.uid);
+
             batch.set(userDocRef, {
                 username: username,
                 email: user.email,
+                displayName: username,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
-            batch.set(usernameRef, { // usernameRef จากขั้นตอนที่ 1
+
+            batch.set(usernameRef, {
                 userId: user.uid,
-                email: user.email
+                email: user.email,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 
-            // 5. Commit Batch Write
             await batch.commit();
             console.log('Firestore write successful!');
 
@@ -133,11 +138,17 @@ if (registerButton) { // ตรวจสอบว่า element ปุ่มม�
         } catch (error) {
             console.error('Registration failed:', error);
             if (error.code && error.code.startsWith('auth/')) {
+                // Error from Firebase Authentication (e.g., email-already-in-use, weak-password)
                 showAuthError(error.message);
             } else {
-                showAuthError('เกิดข้อผิดพลาดบางอย่างระหว่างการลงทะเบียน โปรดลองอีกครั้ง');
-                if (auth.currentUser) {
-                    console.warn("Auth user might have been created but Firestore write failed.");
+                // Error likely from Firestore (e.g., batch.commit() failed due to rules or network)
+                // or from usernameDoc.get()
+                showAuthError('เกิดข้อผิดพลาดในการบันทึกข้อมูลผู้ใช้ โปรดลองอีกครั้ง');
+                if (userCredentialForCatch && userCredentialForCatch.user) {
+                    // Auth user was created, but Firestore operations failed.
+                    console.warn(`CRITICAL: Auth user ${userCredentialForCatch.user.uid} was created, but Firestore write failed. Manual cleanup might be needed. Error:`, error.message, error);
+                } else {
+                    console.warn("Firestore operation failed during registration, and Auth user might not have been created or userCredential was not captured. Error:", error.message, error);
                 }
             }
         }
@@ -148,9 +159,8 @@ if (registerButton) { // ตรวจสอบว่า element ปุ่มม�
 
 
 // ======== Event Listener ของปุ่ม Login ========
-if (loginButton) { // ตรวจสอบว่า element ปุ่มมีอยู่จริงหรือไม่
+if (loginButton) {
     loginButton.addEventListener('click', async () => {
-        // ตรวจสอบว่า input elements มีอยู่จริงหรือไม่ ก่อนอ่าน value
         if (!loginUsernameInput || !loginPasswordInput) {
              console.error("Login form inputs not found!");
              showAuthError("เกิดข้อผิดพลาดกับฟอร์มล็อกอิน");
@@ -165,7 +175,6 @@ if (loginButton) { // ตรวจสอบว่า element ปุ่มมี�
         try {
             let emailToLogin = usernameOrEmail;
 
-            // ตรวจสอบว่าเป็น Username หรือ Email
             if (!usernameOrEmail.includes('@')) {
                 const usernameLower = usernameOrEmail.toLowerCase();
                 console.log(`Input looks like username: ${usernameLower}. Querying Firestore...`);
@@ -183,7 +192,6 @@ if (loginButton) { // ตรวจสอบว่า element ปุ่มมี�
                 console.log(`Input looks like email: ${emailToLogin}`);
             }
 
-            // ใช้ Email ที่ได้มา Login Auth
             console.log(`Attempting Firebase Auth sign-in with email: ${emailToLogin}`);
             const userCredential = await auth.signInWithEmailAndPassword(emailToLogin, password);
             console.log('Login successful! User:', userCredential.user);
@@ -206,7 +214,7 @@ if (loginButton) { // ตรวจสอบว่า element ปุ่มมี�
 
 
 // ======== Event Listener ของปุ่ม Logout ========
-if (logoutButton) { // ตรวจสอบว่า element ปุ่มมีอยู่จริงหรือไม่
+if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         auth.signOut().then(() => {
             console.log('ออกจากระบบแล้ว!');
@@ -224,9 +232,8 @@ if (logoutButton) { // ตรวจสอบว่า element ปุ่มมี
 // ======== onAuthStateChanged ========
 auth.onAuthStateChanged(async (user) => {
     if (user) {
-        // ผู้ใช้ล็อกอินอยู่
         console.log('ผู้ใช้ล็อกอินอยู่:', user.email, 'UID:', user.uid);
-        let displayNameToShow = user.email;
+        let displayNameToShow = user.email; 
         try {
             console.log(`กำลังดึงข้อมูลผู้ใช้จาก Firestore สำหรับ UID: ${user.uid}`);
             const userDocRef = db.collection('users').doc(user.uid);
@@ -234,33 +241,34 @@ auth.onAuthStateChanged(async (user) => {
             if (userDoc.exists) {
                 const userData = userDoc.data();
                 console.log('พบข้อมูลผู้ใช้ใน Firestore:', userData);
-                if (userData.username) {
+                if (userData.displayName) {
+                    displayNameToShow = userData.displayName;
+                    console.log(`กำลังแสดง displayName: ${displayNameToShow}`);
+                } else if (userData.username) {
                     displayNameToShow = userData.username;
-                    console.log(`กำลังแสดง username: ${displayNameToShow}`);
-                } else { console.log('ไม่พบฟิลด์ username ในเอกสาร Firestore, ใช้ email แทน'); }
-            } else { console.warn(`ไม่พบเอกสารผู้ใช้สำหรับ UID ${user.uid} ใน Firestore!`); }
+                    console.log(`ไม่พบฟิลด์ displayName, กำลังแสดง username: ${displayNameToShow}`);
+                } else {
+                     console.log('ไม่พบฟิลด์ displayName และ username ในเอกสาร Firestore, ใช้ email แทน');
+                }
+            } else { console.warn(`ไม่พบเอกสารผู้ใช้สำหรับ UID ${user.uid} ใน Firestore! อาจจะยังไม่ได้สร้างตอน register หรือมีปัญหา`); }
         } catch (error) { console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้จาก Firestore:", error); }
 
-        // อัปเดต UI
         if(userDisplay) userDisplay.textContent = `| ${displayNameToShow}`;
         if(authContainer) authContainer.style.display = 'none';
         if(appContainer) appContainer.style.display = 'flex';
         if(authErrorDisplay) authErrorDisplay.textContent = '';
 
     } else {
-        // ผู้ใช้ไม่ได้ล็อกอิน
         console.log('ผู้ใช้ออกจากระบบแล้ว');
         if(authContainer) authContainer.style.display = 'block';
         if(appContainer) appContainer.style.display = 'none';
         if(userDisplay) userDisplay.textContent = '';
 
-        // ล้าง Spinner Inputs
         if (inputText) inputText.value = ''; if (outputText) outputText.value = ''; if (keywordInput) keywordInput.value = '';
         if (currentMode) {
            if(xorModeBtn) xorModeBtn.classList.remove('active'); if(wordSpinnerModeBtn) wordSpinnerModeBtn.classList.remove('active'); if(emojiModeBtn) emojiModeBtn.classList.remove('active');
            currentMode = null; if (typeof updateUI === 'function') updateUI();
         }
-         // ล้าง Auth Forms
         if(loginUsernameInput) loginUsernameInput.value = ''; if(loginPasswordInput) loginPasswordInput.value = '';
         if(registerUsernameInput) registerUsernameInput.value = ''; if(registerEmailInput) registerEmailInput.value = ''; if(registerPasswordInput) registerPasswordInput.value = '';
         if(authErrorDisplay) authErrorDisplay.textContent = '';
@@ -293,14 +301,9 @@ function isLikelyEncoded(text) { return /^[a-z0-9]{4}/.test(text) && text.length
 function updateUI() { if(keywordSection) keywordSection.style.display = (currentMode === 'xor') ? 'flex' : 'none'; }
 function processCurrentMode() { if (!auth.currentUser) { console.warn("User not logged in, cannot process."); showToast("⚠️ กรุณาล็อกอินก่อนใช้งานฟังก์ชันนี้", 3000, true); return; } const text = inputText.value; let result = ''; let action = ''; if (text.trim() === '') { if(outputText) outputText.value = ''; return; } if (!currentMode) { if(outputText) outputText.value = '⚠️ กรุณาเลือกโหมดก่อน'; showToast('⚠️ กรุณาเลือกโหมดก่อน', 3000); return; } try { if (currentMode === 'xor') { let key = keywordInput.value.trim() || DEFAULT_KEYWORD; if (isLikelyEncoded(text)) { action = '🔑 กำลังถอดรหัส (Key)...'; showToast(action); result = decodeThaiEng(text, key); } else { action = '🔒 กำลังเข้ารหัส (Key)...'; showToast(action); result = encodeThaiEng(text.trim(), key); } } else if (currentMode === 'wordspinner') { if (isLikelyWordspinner(text)) { action = '🔄 กำลังถอดรหัส (Spinner)...'; showToast(action); result = decodeWordspinner(text); } else { action = '✨ กำลังเข้ารหัส (Spinner)...'; showToast(action); result = encodeWordspinner(text.trim()); } } else if (currentMode === 'emoji') { if (isAllEmoji(text)) { action = '😃 กำลังถอดรหัส (Emoji)...'; showToast(action); result = decodeEmoji(text); } else { action = '🤪 กำลังเข้ารหัส (Emoji)...'; showToast(action); result = encodeEmoji(text.trim()); } } if(outputText) outputText.value = result; } catch (error) { console.error("Processing Error:", error); showToast(`❌ เกิดข้อผิดพลาด: ${error.message}`, 4000, true); if(outputText) outputText.value = 'เกิดข้อผิดพลาด!'; } }
 
-// ======== แก้ไข sendLog ให้ถูกต้องและเปิดใช้งาน ========
 function sendLog(input, output, mode, keyword) {
-    // *** ใส่ URL ที่ถูกต้องของมึงที่ได้จากการ Deploy Apps Script ล่าสุด! ***
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxkIJMiPz5HbBSDBKw-nmMvs3LPUa6RsR8AHtUoMMZcVpvHZbRhgGKYO62AoESBs8dufw/exec'; // <-- ตรวจ URL นี้ให้ดี! ต้องมี ' ปิดท้าย!
-
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxkIJMiPz5HbBSDBKw-nmMvs3LPUa6RsR8AHtUoMMZcVpvHZbRhgGKYO62AoESBs8dufw/exec';
     const userIdentifier = auth.currentUser ? (auth.currentUser.email || auth.currentUser.uid) : 'anonymous';
-
-    // เปิดใช้งาน fetch
     fetch(WEB_APP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
@@ -311,7 +314,6 @@ function sendLog(input, output, mode, keyword) {
     .catch(error => { console.error('Logging failed:', error); showToast('⚠️ เกิดปัญหาในการส่ง Log', 3000, true); });
 }
 
-// --- Event Listeners ที่เหลือ ---
 [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(btn => { if(!btn) return; btn.addEventListener('click', () => { if (!auth.currentUser) { showToast("⚠️ กรุณาล็อกอินก่อนเปลี่ยนโหมด", 3000, true); return; } const newMode = btn.id.replace('ModeBtn', '').toLowerCase(); if (currentMode !== newMode) { currentMode = newMode; updateUI(); processCurrentMode(); [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(b => b.classList.remove('active')); btn.classList.add('active'); let modeName = ''; if (currentMode === 'xor') modeName = 'Key Translator'; else if (currentMode === 'wordspinner') modeName = 'Word Spinner'; else if (currentMode === 'emoji') modeName = 'Emoji Code'; showToast(`✅ เปลี่ยนเป็นโหมด ${modeName}`); } }); });
 if(inputText) inputText.addEventListener('input', processCurrentMode);
 if(keywordInput) keywordInput.addEventListener('input', () => { if (currentMode === 'xor' && auth.currentUser) { processCurrentMode(); } });
@@ -324,14 +326,10 @@ window.addEventListener('click', (event) => { if (event.target === helpModal) { 
 
 if (typeof updateUI === 'function') updateUI();
 console.log("สคริปต์ Spinner โหลดและพร้อมใช้งาน (รอการล็อกอิน)");
-// ---- จบสคริปต์ ----
 
-// --- เพิ่มโค้ดนี้ท้ายไฟล์ script.js ---
-
-// ลงทะเบียน Service Worker
-if ('serviceWorker' in navigator) { // เช็คว่า Browser รองรับ Service Worker มั้ย
-  window.addEventListener('load', () => { // รอให้หน้าเว็บโหลดเสร็จก่อนค่อยลงทะเบียน
-    navigator.serviceWorker.register('./sw.js') // บอกตำแหน่งไฟล์ sw.js
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
       .then((registration) => {
         console.log('Service Worker registered successfully with scope:', registration.scope);
       })
@@ -343,7 +341,6 @@ if ('serviceWorker' in navigator) { // เช็คว่า Browser รอง�
   console.log('Service Worker is not supported by this browser.');
 }
 
-// ======== Script for Toggling Login/Register Forms ========
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
 const showRegisterLink = document.getElementById('show-register-link');
@@ -351,26 +348,20 @@ const showLoginLink = document.getElementById('show-login-link');
 
 if (showRegisterLink && loginForm && registerForm) {
   showRegisterLink.addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent default link behavior
+    event.preventDefault();
     loginForm.style.display = 'none';
     registerForm.style.display = 'block';
-    if(authErrorDisplay) authErrorDisplay.textContent = ''; // Clear any previous auth errors
-    if(registerUsernameInput) registerUsernameInput.focus(); // Focus on the first field of register form
+    if(authErrorDisplay) authErrorDisplay.textContent = '';
+    if(registerUsernameInput) registerUsernameInput.focus();
   });
 }
 
 if (showLoginLink && loginForm && registerForm) {
   showLoginLink.addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent default link behavior
+    event.preventDefault();
     registerForm.style.display = 'none';
     loginForm.style.display = 'block';
-    if(authErrorDisplay) authErrorDisplay.textContent = ''; // Clear any previous auth errors
-    if(loginUsernameInput) loginUsernameInput.focus(); // Focus on the first field of login form
+    if(authErrorDisplay) authErrorDisplay.textContent = '';
+    if(loginUsernameInput) loginUsernameInput.focus();
   });
 }
-
-// Ensure the auth container logic in onAuthStateChanged still works well with this.
-// The initial display of login-form (block) and register-form (none) is set in index.html.
-// This script just handles the toggling.
-
-// ---- จบโค้ดที่เพิ่ม ----
