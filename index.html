@@ -43,25 +43,65 @@
       <textarea id="outputText" placeholder="📤 ผลลัพธ์จะแสดงที่นี่..." readonly></textarea>
     </div>
 	
-
     <div class="action-buttons">
       <button id="copyButton"><i class="fas fa-copy"></i> Copy</button>
       <button id="clearButton"><i class="fas fa-trash"></i> Clear</button>
+    </div>
+	
+    <!-- NEW: Support Developer Trigger -->
+    <div id="supportTrigger" class="support-trigger">
+      <span>☕</span>
+      <span class="support-text">สนับสนุนผู้พัฒนา</span>
+      <span>🍺</span>
     </div>
 
     <div class="video-link">
       📹 <a href="https://www.youtube.com/watch?v=VIDEO_ID" target="_blank">เร็วๆนี้...ดูวิดีโอการใช้งานบน YouTube</a>
     </div>
 
-  </div> <div id="helpModal" class="modal">
+  </div> <!-- End of .container -->
+
+  <!-- Help Modal (Existing) -->
+  <div id="helpModal" class="modal">
     <div class="modal-content">
       <span class="close-btn">&times;</span>
       <h2><i class="fas fa-info-circle"></i> วิธีใช้งานแต่ละโหมด 🤓</h2>
       <div id="helpContent">
-        </div>
+        <!-- Content is injected by JS -->
+      </div>
     </div>
   </div>
 
+  <!-- NEW: Donate Modal -->
+  <div id="donateModal" class="modal">
+      <div class="modal-content">
+          <span id="donateCloseBtn" class="close-btn">&times;</span>
+          <h2><i class="fas fa-hand-holding-heart"></i> ☕ เลี้ยงกาแฟ/เบียร์ให้ผู้พัฒนา 🍻</h2>
+          
+          <div class="dynamic-amount-wrapper">
+              <input type="number" id="donateAmount" placeholder="ใส่ยอดเงิน (บาท)" min="1" value="20">
+              <button id="generateQrBtn">สร้าง QR Code</button>
+          </div>
+
+          <!-- QR Code Result Area (Initially Hidden) -->
+          <div id="qrResultArea" class="qr-result-area hidden">
+              <!-- THIS IS THE NEW LINE -->
+              <img src="./promptpay.png" alt="PromptPay Logo" class="qr-top-logo">
+              
+              <img src="" alt="PromptPay QR Code" class="qr-code-image" id="promptpayQrImage">
+              <div class="qr-info-text">
+                  <p class="qr-phone-number">0616164179</p>
+                  <p class="qr-amount" id="qrAmountDisplay"></p>
+              </div>
+          </div>
+
+          <p id="qrInstruction" class="qr-instruction">กรอกจำนวนเงิน แล้วกด "สร้าง QR Code" ได้เลย!</p>
+      </div>
+  </div>
+
   <script src="script.js"></script>
+  <footer class="page-footer">
+    <p>พัฒนาโดย JornJud ❤️ &copy; 2025</p>
+  </footer>
 </body>
 </html>

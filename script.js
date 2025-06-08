@@ -1,12 +1,9 @@
 /*******************************************************
-  script.js - ฉบับตัดระบบฐานข้อมูลและ Log ออก
-  - เอา Firebase Authentication, Firestore ออกทั้งหมด
-  - เอาฟังก์ชัน sendLog ออก
-  - เครื่องมือเข้ารหัส/ถอดรหัสทำงานได้เลย ไม่ต้องล็อกอิน
+  script.js - Main Application Logic
+  - Handles UI interactions, encoding/decoding, and modals.
 ********************************************************/
 
-// ======== Element References (App Only) ========
-const appContainer = document.getElementById('app-container'); // ควรจะแสดงผลเลย
+// ======== Element References ========
 const xorModeBtn = document.getElementById('xorModeBtn');
 const wordSpinnerModeBtn = document.getElementById('wordSpinnerModeBtn');
 const emojiModeBtn = document.getElementById('emojiModeBtn');
@@ -16,50 +13,60 @@ const inputText = document.getElementById('inputText');
 const outputText = document.getElementById('outputText');
 const copyButton = document.getElementById('copyButton');
 const clearButton = document.getElementById('clearButton');
+
+// Help Modal Elements
 const helpBtn = document.getElementById('helpBtn');
 const helpModal = document.getElementById('helpModal');
 const closeBtn = helpModal.querySelector('.close-btn');
 const helpContent = document.getElementById('helpContent');
 
-// ซ่อน auth-container และแสดง app-container ทันที
-const authContainer = document.getElementById('auth-container');
-if (authContainer) {
-  authContainer.style.display = 'none';
-}
-if (appContainer) {
-  appContainer.style.display = 'flex'; // หรือ 'block' ตามที่เหมาะสม
-}
+// NEW: Donate Modal Elements
+const supportTrigger = document.getElementById('supportTrigger');
+const donateModal = document.getElementById('donateModal');
+const donateCloseBtn = document.getElementById('donateCloseBtn');
+const generateQrBtn = document.getElementById('generateQrBtn');
+const donateAmountInput = document.getElementById('donateAmount');
+const qrResultArea = document.getElementById('qrResultArea');
+const qrInstruction = document.getElementById('qrInstruction');
+const qrImage = document.getElementById('promptpayQrImage');
+const qrAmountDisplay = document.getElementById('qrAmountDisplay');
 
 
 let currentMode = null;
 let toastTimeout = null;
 
-// ======== ฟังก์ชันแสดง Toast ========
-function showToast(message, duration = 2500, isError = false) {
+// ======== Toast Notification Function ========
+function showToast(message, duration = 3000, isError = false) {
+  // Clear existing toast
   const existingToast = document.querySelector('.toast-notification');
-  if (existingToast) { clearTimeout(toastTimeout); existingToast.remove(); }
+  if (existingToast) {
+    clearTimeout(toastTimeout);
+    existingToast.remove();
+  }
+  // Create new toast
   const toast = document.createElement('div');
   toast.textContent = message;
   toast.className = 'toast-notification';
-  if (isError) { toast.style.backgroundColor = 'rgba(244, 67, 54, 0.85)'; } // สีแดงสำหรับ error
+  if (isError) {
+    toast.classList.add('error-toast'); // Use class for styling errors
+    toast.style.backgroundColor = 'rgba(244, 67, 54, 0.85)';
+  }
   document.body.appendChild(toast);
+  // Animation timeout
   toastTimeout = setTimeout(() => {
-    if (toast.parentElement) { // เช็คว่า toast ยังอยู่ใน DOM ก่อนจะพยายามลบ
-        toast.style.opacity = '0';
-        setTimeout(() => {
-            if (toast.parentElement) {
-                toast.remove();
-            }
-        }, 300);
-    }
+    toast.style.opacity = '0';
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 300);
   }, duration - 300);
 }
 
 
 // ######################################################################
-// ########   โค้ดส่วน Spinner เดิม (ไม่แก้ไขส่วนนี้)                 ########
+// ########   CORE ENCRYPTION/DECRYPTION LOGIC (UNCHANGED)        ########
 // ######################################################################
-
 const ALLOWED_CHARS = 'กขคฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรลวศษสหฬอฮฤๆะัาิีึืุู็เแโใไๅำ่้๊๋abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,./<>?๐αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
 const DEFAULT_KEYWORD = 'jornjud';
 const DEFAULT_PREFIX = '~';
@@ -78,6 +85,7 @@ function isLikelyWordspinner(text) { return text.startsWith(DEFAULT_PREFIX) && t
 function encodeThaiEng(text, keyword) { const seed = generateShortSeed(); const prng = createPRNG(seed + keyword); return seed + [...text].map(ch => { const idx = ALLOWED_CHARS.indexOf(ch); if (idx === -1) return ch; const randOffset = Math.floor(prng() * ALLOWED_CHARS.length); return ALLOWED_CHARS[(idx + randOffset) % ALLOWED_CHARS.length]; }).join(''); }
 function decodeThaiEng(encText, keyword) { if (!encText || encText.length < SEED_LENGTH) return encText; const seed = encText.slice(0, SEED_LENGTH); const cipherText = encText.slice(SEED_LENGTH); if (cipherText.length === 0) return ''; const prng = createPRNG(seed + keyword); return [...cipherText].map(ch => { const idx = ALLOWED_CHARS.indexOf(ch); if (idx === -1) return ch; const randOffset = Math.floor(prng() * ALLOWED_CHARS.length); return ALLOWED_CHARS[(idx - randOffset % ALLOWED_CHARS.length + ALLOWED_CHARS.length) % ALLOWED_CHARS.length]; }).join(''); }
 function isLikelyEncoded(text) { return /^[a-z0-9]{4}/.test(text) && text.length > SEED_LENGTH; }
+// ######################################################################
 
 function updateUI() {
     if(keywordSection) {
@@ -104,35 +112,17 @@ function processCurrentMode() {
     try {
         if (currentMode === 'xor') {
             let key = keywordInput.value.trim() || DEFAULT_KEYWORD;
-            if (isLikelyEncoded(text)) {
-                action = '🔑 กำลังถอดรหัส (Key)...';
-                showToast(action);
-                result = decodeThaiEng(text, key);
-            } else {
-                action = '🔒 กำลังเข้ารหัส (Key)...';
-                showToast(action);
-                result = encodeThaiEng(text.trim(), key);
-            }
+            action = isLikelyEncoded(text) ? '🔑 กำลังถอดรหัส (Key)...' : '🔒 กำลังเข้ารหัส (Key)...';
+            showToast(action);
+            result = isLikelyEncoded(text) ? decodeThaiEng(text, key) : encodeThaiEng(text.trim(), key);
         } else if (currentMode === 'wordspinner') {
-            if (isLikelyWordspinner(text)) {
-                action = '🔄 กำลังถอดรหัส (Spinner)...';
-                showToast(action);
-                result = decodeWordspinner(text);
-            } else {
-                action = '✨ กำลังเข้ารหัส (Spinner)...';
-                showToast(action);
-                result = encodeWordspinner(text.trim());
-            }
+            action = isLikelyWordspinner(text) ? '🔄 กำลังถอดรหัส (Spinner)...' : '✨ กำลังเข้ารหัส (Spinner)...';
+            showToast(action);
+            result = isLikelyWordspinner(text) ? decodeWordspinner(text) : encodeWordspinner(text.trim());
         } else if (currentMode === 'emoji') {
-            if (isAllEmoji(text)) {
-                action = '😃 กำลังถอดรหัส (Emoji)...';
-                showToast(action);
-                result = decodeEmoji(text);
-            } else {
-                action = '🤪 กำลังเข้ารหัส (Emoji)...';
-                showToast(action);
-                result = encodeEmoji(text.trim());
-            }
+            action = isAllEmoji(text) ? '😃 กำลังถอดรหัส (Emoji)...' : '🤪 กำลังเข้ารหัส (Emoji)...';
+            showToast(action);
+            result = isAllEmoji(text) ? decodeEmoji(text) : encodeEmoji(text.trim());
         }
         if(outputText) outputText.value = result;
     } catch (error) {
@@ -142,66 +132,40 @@ function processCurrentMode() {
     }
 }
 
-// Event Listeners สำหรับปุ่มเลือกโหมด
+// Event Listeners for mode buttons
 [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(btn => {
     if(!btn) return;
     btn.addEventListener('click', () => {
         const newMode = btn.id.replace('ModeBtn', '').toLowerCase();
-        if (currentMode !== newMode) {
-            currentMode = newMode;
-            updateUI();
-            processCurrentMode(); // ประมวลผลทันทีเมื่อเปลี่ยนโหมด
-            [xorModeBtn, wordSpinnerModeBtn, emojiModeBtn].forEach(b => {
-                if (b) b.classList.remove('active');
-            });
-            btn.classList.add('active');
-            let modeName = '';
-            if (currentMode === 'xor') modeName = 'Key Translator';
-            else if (currentMode === 'wordspinner') modeName = 'Word Spinner';
-            else if (currentMode === 'emoji') modeName = 'Emoji Code';
-            showToast(`✅ เปลี่ยนเป็นโหมด ${modeName}`);
-        }
+        if (currentMode === newMode) return;
+        
+        currentMode = newMode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        updateUI();
+        processCurrentMode();
+        
+        let modeName = btn.textContent.trim();
+        showToast(`✅ เปลี่ยนเป็นโหมด ${modeName}`);
     });
 });
 
-if(inputText) {
-    inputText.addEventListener('input', processCurrentMode);
-}
+if(inputText) inputText.addEventListener('input', processCurrentMode);
+if(keywordInput) keywordInput.addEventListener('input', () => { if (currentMode === 'xor') processCurrentMode(); });
 
-if(keywordInput) {
-    keywordInput.addEventListener('input', () => {
-        if (currentMode === 'xor') {
-            processCurrentMode();
-        }
-    });
-}
-
+// Action Buttons
 if(copyButton) {
     copyButton.addEventListener('click', () => {
         if (!outputText || !outputText.value) {
             showToast('❓ ไม่มีข้อความให้คัดลอก', 2000);
             return;
         }
-        const outputToLog = outputText.value;
-        navigator.clipboard.writeText(outputToLog).then(() => {
+        navigator.clipboard.writeText(outputText.value).then(() => {
             showToast('📋 คัดลอกไปยังคลิปบอร์ดแล้ว');
-            // ไม่มีการเรียก sendLog อีกต่อไป
         }).catch(err => {
-            console.error('Clipboard API ล้มเหลว: ', err);
-            try {
-                if(outputText) {
-                    outputText.select();
-                    outputText.setSelectionRange(0, 99999); /* For mobile devices */
-                }
-                if (document.execCommand('copy')) {
-                    showToast('📋 คัดลอกไปยังคลิปบอร์ดแล้ว (วิธีเก่า)');
-                } else {
-                    showToast('❌ ไม่สามารถคัดลอกได้ ลองกด Ctrl+C ด้วยตนเอง');
-                }
-            } catch (execErr) {
-                console.error('การคัดลอกวิธีเก่าล้มเหลว', execErr);
-                showToast('❌ ไม่สามารถคัดลอกได้ ลองกด Ctrl+C ด้วยตนเอง');
-            }
+            showToast('❌ คัดลอกไม่สำเร็จ', 3000, true);
+            console.error('Clipboard API failed: ', err);
         });
     });
 }
@@ -215,6 +179,9 @@ if(clearButton) {
     });
 }
 
+// ======== Modal Logic (Help & Donate) ========
+
+// --- Help Modal ---
 function showHelp() {
     if(!helpContent) return;
     helpContent.innerHTML = `
@@ -226,45 +193,80 @@ function showHelp() {
     if(helpModal) helpModal.style.display = 'block';
 }
 
-if(helpBtn) {
-    helpBtn.addEventListener('click', showHelp);
+if(helpBtn) helpBtn.addEventListener('click', showHelp);
+
+// --- NEW: Donate Modal ---
+function showDonateModal() {
+    if(donateModal) {
+        // Reset modal to initial state every time it's opened
+        if(qrResultArea) qrResultArea.classList.add('hidden');
+        if(qrInstruction) qrInstruction.classList.remove('hidden');
+        if(donateAmountInput) donateAmountInput.value = '20'; // Reset to default amount
+        donateModal.style.display = 'block';
+    }
 }
 
-if(closeBtn) {
-    closeBtn.addEventListener('click', () => {
-        if(helpModal) helpModal.style.display = 'none';
-    });
+function closeDonateModal() {
+    if(donateModal) donateModal.style.display = 'none';
 }
 
+if(supportTrigger) supportTrigger.addEventListener('click', showDonateModal);
+if(donateCloseBtn) donateCloseBtn.addEventListener('click', closeDonateModal);
+
+// Close modals when clicking outside
 window.addEventListener('click', (event) => {
     if (event.target === helpModal) {
         if(helpModal) helpModal.style.display = 'none';
     }
+    if (event.target === donateModal) {
+        closeDonateModal();
+    }
 });
 
-// เรียก updateUI ครั้งแรกเพื่อให้ keyword section ถูกต้อง (ถ้ามีโหมดเริ่มต้น)
-updateUI();
-console.log("สคริปต์ Spinner (Standalone) โหลดและพร้อมใช้งาน");
+// --- NEW: Logic for creating QR Code (inside the modal) ---
+const myPromptpayId = '0616164179';
 
-// ส่วน Service Worker registration ยังคงไว้
+function updateQrCode() {
+  if (!donateAmountInput || !qrImage || !qrAmountDisplay || !qrResultArea || !qrInstruction) {
+    console.error("QR Code modal elements not found!");
+    return;
+  }
+  const amount = donateAmountInput.value;
+
+  if (!amount || amount <= 0) {
+    showToast('เฮ้ยเพื่อน! ใส่ยอดเงินก่อนดิ 🤣', 3000, true);
+    return;
+  }
+
+  const newQrUrl = `https://www.pp-qr.com/api/image/${myPromptpayId}/${amount}`;
+  qrImage.src = newQrUrl;
+  qrAmountDisplay.textContent = `${amount} บาท`;
+
+  qrResultArea.classList.remove('hidden');
+  qrInstruction.classList.add('hidden');
+
+  showToast(`✅ QR สำหรับ ${amount} บาทมาแล้ว! ขอบใจนะเพื่อน 👊`, 3500);
+}
+
+if (generateQrBtn) generateQrBtn.addEventListener('click', updateQrCode);
+if (donateAmountInput) {
+    donateAmountInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            updateQrCode();
+        }
+    });
+}
+
+// Initial UI setup
+updateUI();
+console.log("สคริปต์หลักโหลดและพร้อมใช้งาน");
+
+// Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
-      .then((registration) => {
-        console.log('Service Worker registered successfully with scope:', registration.scope);
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed:', error);
-      });
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.error('Service Worker registration failed:', err));
   });
-} else {
-  console.log('Service Worker is not supported by this browser.');
 }
-
-// ส่วนสลับฟอร์ม login/register ไม่จำเป็นอีกต่อไป สามารถลบออกได้
-// const loginForm = document.getElementById('login-form');
-// const registerForm = document.getElementById('register-form');
-// const showRegisterLink = document.getElementById('show-register-link');
-// const showLoginLink = document.getElementById('show-login-link');
-// if (showRegisterLink && loginForm && registerForm) { ... }
-// if (showLoginLink && loginForm && registerForm) { ... }

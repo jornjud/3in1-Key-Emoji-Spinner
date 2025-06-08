@@ -28,138 +28,6 @@ body {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* --- Authentication Styles (Kept for potential future use, but visually updated) --- */
-#auth-container {
-  max-width: 400px;
-  background-color: #fff;
-  margin: 30px auto;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
-}
-
-#auth-container h1 {
-  font-size: 1.6rem;
-  color: #1a2533;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-#auth-container p {
-  text-align: center;
-  color: #667281;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-}
-
-#auth-container h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 15px;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#auth-container h2 i {
-  margin-right: 8px;
-  color: #007aff; /* Brighter accent */
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-#auth-container label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 500;
-  font-size: 0.85rem;
-  color: #4a5568;
-}
-
-#auth-container input[type="text"],
-#auth-container input[type="email"],
-#auth-container input[type="password"] {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #d8dde3;
-  border-radius: 10px;
-  background-color: #f8f9fa;
-  color: #2c3e50;
-  font-size: 0.9rem;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-#auth-container input[type="text"]:focus,
-#auth-container input[type="email"]:focus,
-#auth-container input[type="password"]:focus {
-  outline: none;
-  border-color: #007aff;
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
-}
-
-#auth-container .action-btn {
-  width: 100%;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-#login-button {
-  background-color: #007aff; /* Primary Blue */
-  color: white;
-}
-#login-button:hover {
-  background-color: #005ecb;
-}
-
-#register-button {
-  background-color: #34c759; /* Vibrant Green */
-  color: white;
-}
-#register-button:hover {
-  background-color: #2aa248;
-}
-
-#auth-container .action-btn:active {
-  transform: scale(0.97);
-}
-
-.form-switcher-text {
-  text-align: center;
-  margin-top: 18px;
-  font-size: 0.8rem;
-  color: #555e68;
-}
-.form-switcher-text a {
-  color: #007aff;
-  text-decoration: none;
-  font-weight: 500;
-}
-.form-switcher-text a:hover {
-  text-decoration: underline;
-}
-
-#auth-error {
-  color: #ff3b30; /* Vibrant Red for errors */
-  text-align: center;
-  margin-top: 12px;
-  font-weight: 500;
-  min-height: 1.1em;
-  font-size: 0.85rem;
-}
-/* --- End of Auth Styles --- */
-
-
 /* --- Styles for the Main App (#app-container) --- */
 .header-with-help {
   display: flex;
@@ -169,19 +37,19 @@ body {
   margin-bottom: 10px; /* Reduced margin */
 }
 .header-with-help h1 {
-  font-size: 2rem;
+  font-size: 2rem; /* Default for big screens, will be overridden by media queries below */
   font-weight: 700;
   color: #1a2533; /* For light mode */
   margin-bottom: 0;
-  text-align: center; /* Changed from left to center */
-  flex-grow: 1; /* Added this to make the h1 expand */
+  text-align: center;
+  flex-grow: 1;
   letter-spacing: -0.5px;
-  /* Make sure to adjust the color if you're editing within a dark mode media query,
-     but text-align and flex-grow are the main things. */
+  word-break: break-word; /* Prevents ugly overflow if text is too long */
+  line-height: 1.2; /* Adds a bit of breathing room */
 }
 
-/* Help and Action Buttons (like Logout, if it existed) */
-.help-btn /*, #logout-button (if you add it back) */ {
+/* Help and Action Buttons */
+.help-btn {
   padding: 10px; /* Square padding for a circular button */
   font-size: 1.2rem;
   background-color: transparent; /* Cleaner look */
@@ -202,23 +70,6 @@ body {
   color: #007aff; /* Accent on hover */
   border-color: #007aff;
   transform: rotate(15deg); /* Playful rotation */
-}
-/*
-#logout-button {
-    border-color: #ff3b30;
-    color: #ff3b30;
-}
-#logout-button:hover {
-    background-color: #ff3b30;
-    color: white;
-    border-color: #ff3b30;
-}
-*/
-#user-display {
-  font-size: 0.9rem;
-  color: #555e68;
-  margin-right: 5px;
-  font-weight: 500;
 }
 
 /* Mode Instruction */
@@ -395,6 +246,41 @@ textarea:focus {
   transform: scale(0.96);
 }
 
+/* --- NEW: Support Developer Trigger --- */
+.support-trigger {
+  text-align: center;
+  margin-top: 25px;
+  padding: 10px 15px;
+  background-color: #f8f9fc;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #37474f;
+  transition: all 0.25s ease;
+  display: table; /* Use table to not take full width */
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #e8ecf1;
+}
+
+.support-trigger:hover {
+  background-color: #e1e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.support-trigger .support-text {
+  margin: 0 8px;
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.support-trigger span {
+  font-size: 1.1rem;
+  vertical-align: middle;
+}
+
+
 /* Video Link */
 .video-link {
   text-align: center;
@@ -413,7 +299,7 @@ textarea:focus {
 }
 .video-link i { margin-right: 5px; }
 
-/* Modal (Help) */
+/* Modal (General) */
 .modal {
   display: none;
   position: fixed;
@@ -429,10 +315,10 @@ textarea:focus {
 .modal-content {
   background-color: #ffffff;
   color: #2c3e50;
-  margin: 8% auto; /* Adjusted for better vertical centering */
-  padding: 30px 35px; /* More padding */
+  margin: 8% auto;
+  padding: 30px 35px;
   width: 90%;
-  max-width: 600px; /* Slightly wider modal */
+  max-width: 500px;
   border-radius: 16px;
   position: relative;
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
@@ -458,9 +344,15 @@ textarea:focus {
   color: #007aff;
   text-align: center;
   margin-bottom: 25px;
-  font-size: 1.6rem; /* Larger modal title */
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 .modal-content h2 i { margin-right: 10px; }
+
+/* Help Modal Specifics */
 #helpContent div {
   margin-bottom: 18px;
   padding-bottom: 18px;
@@ -495,6 +387,91 @@ textarea:focus {
   border: 1px solid #e0e6eb;
 }
 
+/* --- Donate Modal Styles --- */
+.dynamic-amount-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 320px;
+  margin: 15px auto 20px auto;
+}
+.dynamic-amount-wrapper input {
+  padding: 12px;
+  border: 1px solid #dbe0e4;
+  border-radius: 10px;
+  width: 100%;
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1rem;
+}
+.dynamic-amount-wrapper input:focus {
+  border-color: #007aff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+.dynamic-amount-wrapper button {
+  padding: 12px 18px;
+  border: none;
+  background-color: #007aff;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+.dynamic-amount-wrapper button:hover {
+  background-color: #005ecb;
+}
+
+.qr-result-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInModal 0.5s;
+}
+
+/* THIS IS THE NEW STYLE */
+.qr-top-logo {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px; /* Space between logo and QR code */
+}
+
+.qr-code-image {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+.qr-info-text {
+  text-align: center;
+  line-height: 1.4;
+}
+.qr-phone-number, .qr-amount {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+.qr-instruction {
+    text-align: center;
+    color: #546e7a;
+    margin-top: 15px;
+    font-style: italic;
+}
+.hidden {
+  display: none !important;
+}
+
+
 /* Toast Notification */
 .toast-notification {
   position: fixed;
@@ -510,7 +487,7 @@ textarea:focus {
   z-index: 10000;
   box-shadow: 0px 5px 15px rgba(26, 37, 51, 0.3); /* Softer shadow */
   white-space: nowrap;
-  animation: fadeInOutToast 3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+  animation: fadeInOutToast 3.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 .toast-notification.error-toast { /* Specific class for error toasts */
     background-color: rgba(255, 59, 48, 0.95); /* iOS-like red for errors */
@@ -527,153 +504,67 @@ textarea:focus {
   100% { opacity: 0; transform: translate(-50%, 20px); }
 }
 
-/* --- Dark Mode - Sleek & Modern --- */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #121212; /* True dark */
-    color: #e0e0e0; /* Light grey text */
-  }
-
-  .container, #auth-container {
-    background: #1e1e1e; /* Slightly lighter dark for cards */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
-  }
-
-  .header-with-help h1, #auth-container h1, #auth-container h2 { color: #f5f5f5; }
-  #auth-container p { color: #a0a0a0; }
-  #auth-container h2 i { color: #0a84ff; } /* Brighter blue for dark mode */
-
-  #auth-container label { color: #b0b0b0; }
-  #auth-container input[type="text"],
-  #auth-container input[type="email"],
-  #auth-container input[type="password"] {
-    border-color: #383838;
-    background-color: #2c2c2c;
-    color: #e0e0e0;
-  }
-  #auth-container input[type="text"]::placeholder,
-  #auth-container input[type="email"]::placeholder,
-  #auth-container input[type="password"]::placeholder {
-    color: #757575;
-  }
-  #auth-container input[type="text"]:focus,
-  #auth-container input[type="email"]:focus,
-  #auth-container input[type="password"]:focus {
-    border-color: #0a84ff;
-    background-color: #2c2c2c;
-    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.25);
-  }
-
-  #login-button { background-color: #0a84ff; }
-  #login-button:hover { background-color: #0071e3; }
-  #register-button { background-color: #30d158; }
-  #register-button:hover { background-color: #28b34b; }
-
-  .form-switcher-text { color: #a0a0a0; }
-  .form-switcher-text a { color: #0a84ff; }
-  #auth-error { color: #ff453a; }
-
-  /* App Specific Dark Mode */
-  .help-btn {
-    color: #b0b0b0;
-    border-color: #383838;
-  }
-  .help-btn:hover {
-    background-color: #2c2c2c;
-    color: #0a84ff;
-    border-color: #0a84ff;
-  }
-  #user-display { color: #b0b0b0; }
-
-  .mode-instruction {
-    color: #b0b0b0;
-    background-color: #2c2c2c;
-    border-color: #383838;
-  }
-  .mode-instruction i { color: #0a84ff; }
-
-  .mode-btn {
-    background: #2c2c2c;
-    color: #e0e0e0;
-    /* border-color: #383838; */ /* Using transparent border, active state adds color */
-  }
-  .mode-btn.active {
-    background: #0a84ff;
-    color: #fff;
-    border-color: #0a84ff;
-    box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
-  }
-  .mode-btn:hover:not(.active) {
-    background: #3a3a3a;
-    /* border-color: #4a4a4a; */
-  }
-
-  .keyword-section {
-    background-color: #2c2c2c;
-    border-color: #383838;
-  }
-  .keyword-section label { color: #e0e0e0; }
-  .keyword-section label i { color: #0a84ff; }
-  .keyword-section input {
-    background: #3a3a3a;
-    color: #e0e0e0;
-    border-color: #4a4a4a;
-  }
-   .keyword-section input::placeholder { color: #757575; }
-  .keyword-section input:focus {
-    border-color: #0a84ff;
-    background-color: #3a3a3a;
-    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
-  }
-
-  textarea {
-    background: #2c2c2c;
-    color: #e0e0e0;
-    border-color: #383838;
-  }
-  textarea::placeholder { color: #757575; }
-  textarea:focus {
-    border-color: #0a84ff;
-    background-color: #252525; /* Slightly darker on focus */
-    box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25);
-  }
-   #outputText {
-    background-color: #292929; /* Differentiate output slightly */
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) { .header-with-help h1 { font-size: 1.7rem; } }
+@media (max-width: 480px) {
+  .header-with-help h1 { font-size: 1.4rem; letter-spacing: -0.25px; }
+  .container { padding: 20px 15px; gap: 20px; }
+  textarea { height: 120px; }
+  .mode-btn, .action-buttons button { padding: 10px 18px; }
+}
+@media (max-width: 420px) {
+  .mode-buttons, .action-buttons { flex-direction: column; align-items: stretch; }
+  .mode-btn, .action-buttons button { width: 100%; margin-bottom: 10px; }
+  .mode-btn:last-child, .action-buttons button:last-child { margin-bottom: 0; }
+}
+@media (max-width: 400px) {
+  .keyword-section { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px; }
+  .keyword-section label { text-align: left; margin-bottom: 4px; }
+  .keyword-section input { width: 100%; }
+  .modal-content { margin: 10% auto; padding: 20px 25px; }
+  .modal-content h2 { font-size: 1.4rem; }
+}
+@media (max-width: 360px) {
+  .header-with-help h1 { font-size: 1.25rem; }
+  .container { padding: 15px 10px; gap: 15px; }
+  textarea { font-size: 0.95rem; height: 110px; }
+  .mode-btn, .action-buttons button { font-size: 0.9rem; padding: 10px 15px; }
 }
 
 
-  .action-buttons button {
-    background-color: #1e1e1e; /* Match container bg */
-  }
-  #copyButton {
-    color: #30d158; /* Brighter Green */
-    border-color: #30d158;
-  }
-  #copyButton:hover {
-    background-color: #30d158;
-    color: #121212; /* Dark text on green bg */
-    box-shadow: 0 3px 8px rgba(48, 209, 88, 0.25);
-  }
-  #clearButton {
-    color: #ff453a; /* Brighter Red */
-    border-color: #ff453a;
-  }
-  #clearButton:hover {
-    background-color: #ff453a;
-    color: #121212; /* Dark text on red bg */
-    box-shadow: 0 3px 8px rgba(255, 69, 58, 0.25);
-  }
-
+/* --- Dark Mode --- */
+@media (prefers-color-scheme: dark) {
+  body { background: #121212; color: #e0e0e0; }
+  .container { background: #1e1e1e; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+  .header-with-help h1 { color: #f5f5f5; }
+  .help-btn { color: #b0b0b0; border-color: #383838; }
+  .help-btn:hover { background-color: #2c2c2c; color: #0a84ff; border-color: #0a84ff; }
+  .mode-instruction { color: #b0b0b0; background-color: #2c2c2c; border-color: #383838; }
+  .mode-instruction i { color: #0a84ff; }
+  .mode-btn { background: #2c2c2c; color: #e0e0e0; }
+  .mode-btn.active { background: #0a84ff; color: #fff; border-color: #0a84ff; box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3); }
+  .mode-btn:hover:not(.active) { background: #3a3a3a; }
+  .keyword-section { background-color: #2c2c2c; border-color: #383838; }
+  .keyword-section label { color: #e0e0e0; }
+  .keyword-section label i { color: #0a84ff; }
+  .keyword-section input { background: #3a3a3a; color: #e0e0e0; border-color: #4a4a4a; }
+  .keyword-section input::placeholder { color: #757575; }
+  .keyword-section input:focus { border-color: #0a84ff; background-color: #3a3a3a; box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2); }
+  textarea { background: #2c2c2c; color: #e0e0e0; border-color: #383838; }
+  textarea::placeholder { color: #757575; }
+  textarea:focus { border-color: #0a84ff; background-color: #252525; box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.25); }
+  #outputText { background-color: #292929; }
+  .action-buttons button { background-color: #1e1e1e; }
+  #copyButton { color: #30d158; border-color: #30d158; }
+  #copyButton:hover { background-color: #30d158; color: #121212; box-shadow: 0 3px 8px rgba(48, 209, 88, 0.25); }
+  #clearButton { color: #ff453a; border-color: #ff453a; }
+  #clearButton:hover { background-color: #ff453a; color: #121212; box-shadow: 0 3px 8px rgba(255, 69, 58, 0.25); }
   .video-link a { color: #0a84ff; }
   .video-link a:hover { color: #409cff; }
 
   /* Modal Dark Mode */
-  .modal { background-color: rgba(0,0,0,0.75); } /* Darker overlay */
-  .modal-content {
-    background-color: #252525; /* Darker modal */
-    color: #e0e0e0;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-  }
+  .modal { background-color: rgba(0,0,0,0.75); }
+  .modal-content { background-color: #252525; color: #e0e0e0; box-shadow: 0 10px 50px rgba(0,0,0,0.5); }
   .close-btn { color: #757575; }
   .close-btn:hover, .close-btn:focus { color: #ff453a; }
   .modal-content h2 { color: #0a84ff; }
@@ -681,20 +572,40 @@ textarea:focus {
   #helpContent h3 { color: #f5f5f5; }
   #helpContent h3 i { color: #a0a0a0; }
   #helpContent p { color: #b0b0b0; }
-  #helpContent code {
-    background-color: #3a3a3a;
-    color: #ffab73; /* Light orange/pink for code */
-    border-color: #4a4a4a;
-  }
+  #helpContent code { background-color: #3a3a3a; color: #ffab73; border-color: #4a4a4a; }
+
+  /* New Elements Dark Mode */
+  .support-trigger { background-color: #2c2c2c; border-color: #383838; color: #e0e0e0; }
+  .support-trigger:hover { background-color: #3a3a3a; }
+  .dynamic-amount-wrapper input { background-color: #3a3a3a; color: #e0e0e0; border-color: #4a4a4a; }
+  .dynamic-amount-wrapper input:focus { border-color: #0a84ff; background-color: #3a3a3a; }
+  .dynamic-amount-wrapper button { background-color: #0a84ff; }
+  .dynamic-amount-wrapper button:hover { background-color: #0071e3; }
+  .qr-phone-number, .qr-amount { color: #e0e0e0; }
+  .qr-instruction { color: #a0a0a0; }
 
   /* Toast Dark Mode */
-  .toast-notification {
-    background-color: rgba(240, 240, 240, 0.95); /* Light toast on dark bg */
-    color: #121212; /* Dark text */
-    box-shadow: 0px 5px 15px rgba(240, 240, 240, 0.15);
-  }
-  .toast-notification.error-toast {
-    background-color: rgba(255, 105, 97, 0.95); /* Lighter, softer red for errors on dark */
-    color: #121212;
+  .toast-notification { background-color: rgba(240, 240, 240, 0.95); color: #121212; box-shadow: 0px 5px 15px rgba(240, 240, 240, 0.15); }
+  .toast-notification.error-toast { background-color: rgba(255, 105, 97, 0.95); color: #121212; }
+}
+
+/* --- Page Footer --- */
+.page-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-bottom: 20px;
+  font-size: 0.9rem;
+  color: #8a9aaa;
+  width: 100%;
+}
+
+.page-footer p {
+  margin: 0;
+}
+
+/* Dark Mode for Footer */
+@media (prefers-color-scheme: dark) {
+  .page-footer {
+    color: #6a7a8a;
   }
 }
