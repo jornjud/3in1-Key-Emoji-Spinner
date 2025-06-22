@@ -2,18 +2,22 @@
   "name": "3in1-key-emoji-spinner",
   "version": "1.0.0",
   "description": "✨ 3in1 Key-Emoji-Spinner ✨",
-   "source": "index.html", // <--- เพิ่มบรรทัดนี้ บอก Parcel ว่าไฟล์เริ่มต้นคือ index.html
-  "main": "script.js",
+  "source": "index.html",
   "scripts": {
-	"start": "parcel", // <--- เพิ่มบรรทัดนี้ ไว้สำหรับรันเซิร์ฟเวอร์ทดสอบ
-    "build": "parcel build" // <--- เพิ่มบรรทัดนี้ ไว้สำหรับสร้างไฟล์ไปใช้งานจริง
+    "start": "parcel",
+    "build": "parcel build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "parcel": "^2.15.4",
-    "promptpay-qr": "^0.5.0"
+    "parcel": "^2.12.0",
+    "promptpay-qr": "^0.5.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.15.4",
+    "@parcel/transformer-webmanifest": "^2.15.4"
   }
 }

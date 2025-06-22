@@ -4,6 +4,7 @@
 ********************************************************/
 // เพิ่มบนสุดเลย
 import promptpay from 'promptpay-qr';
+import QRCode from 'qrcode';
 
 // ======== Element References ========
 const xorModeBtn = document.getElementById('xorModeBtn');
@@ -228,32 +229,40 @@ window.addEventListener('click', (event) => {
 // --- NEW: Logic for creating QR Code (inside the modal) ---
 const myPromptpayId = '0616164179';
 
-function updateQrCode() {
+async function updateQrCode() { // <--- เพิ่ม async ตรงนี้
   if (!donateAmountInput || !qrImage || !qrAmountDisplay || !qrResultArea || !qrInstruction) {
     console.error("QR Code modal elements not found!");
     return;
   }
-  const amount = parseFloat(donateAmountInput.value); // แปลงเป็นตัวเลข แจ่มกว่า
+  const amount = parseFloat(donateAmountInput.value);
 
-  if (isNaN(amount) || amount <= 0) { // เช็คด้วย isNaN เผื่อ user พิมพ์มั่ว
+  if (isNaN(amount) || amount <= 0) {
     showToast('เฮ้ยเพื่อน! ใส่ยอดเงินก่อนดิ 🤣', 3000, true);
     return;
   }
 
   // --- ส่วนที่เปลี่ยนคือตรงนี้ ---
-  // สร้าง QR Code เป็น Data URL (ข้อมูลรูปภาพที่อยู่ในรูปข้อความ)
-  const payload = promptpay(myPromptpayId, { amount });
+  try {
+    // 1. สร้างชุดข้อความด้วย promptpay-qr
+    const payload = promptpay(myPromptpayId, { amount });
 
-  // เอารูปไปโชว์ในแท็ก img ได้เลย!
-  qrImage.src = payload;
-  // --- จบส่วนที่เปลี่ยน ---
+    // 2. วาดรูป QR Code จากชุดข้อความด้วย qrcode
+    const qrDataURL = await QRCode.toDataURL(payload);
 
-  qrAmountDisplay.textContent = `${amount.toFixed(2)} บาท`; // toFixed(2) เผื่อยอดมีทศนิยม
+    // 3. เอารูปไปโชว์ในแท็ก img
+    qrImage.src = qrDataURL;
 
-  qrResultArea.classList.remove('hidden');
-  qrInstruction.classList.add('hidden');
+    // --- จบส่วนที่เปลี่ยน ---
 
-  showToast(`✅ QR สำหรับ ${amount} บาทมาแล้ว! ขอบใจนะเพื่อน 👊`, 3500);
+    qrAmountDisplay.textContent = `${amount.toFixed(2)} บาท`;
+    qrResultArea.classList.remove('hidden');
+    qrInstruction.classList.add('hidden');
+    showToast(`✅ QR สำหรับ ${amount} บาทมาแล้ว! ขอบใจนะเพื่อน 👊`, 3500);
+
+  } catch (err) {
+    console.error("Failed to generate QR Code:", err);
+    showToast('❌ โอ้ย! สร้าง QR Code ไม่ได้ว่ะ!', 4000, true);
+  }
 }
 
 if (generateQrBtn) generateQrBtn.addEventListener('click', updateQrCode);
@@ -273,7 +282,7 @@ console.log("สคริปต์หลักโหลดและพร้อ�
 // Service Worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register(new URL('./sw.js', import.meta.url))
       .then(reg => console.log('Service Worker registered:', reg.scope))
       .catch(err => console.error('Service Worker registration failed:', err));
   });
