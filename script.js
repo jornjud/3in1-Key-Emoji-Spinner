@@ -2,6 +2,8 @@
   script.js - Main Application Logic
   - Handles UI interactions, encoding/decoding, and modals.
 ********************************************************/
+// เพิ่มบนสุดเลย
+import promptpay from 'promptpay-qr';
 
 // ======== Element References ========
 const xorModeBtn = document.getElementById('xorModeBtn');
@@ -231,16 +233,22 @@ function updateQrCode() {
     console.error("QR Code modal elements not found!");
     return;
   }
-  const amount = donateAmountInput.value;
+  const amount = parseFloat(donateAmountInput.value); // แปลงเป็นตัวเลข แจ่มกว่า
 
-  if (!amount || amount <= 0) {
+  if (isNaN(amount) || amount <= 0) { // เช็คด้วย isNaN เผื่อ user พิมพ์มั่ว
     showToast('เฮ้ยเพื่อน! ใส่ยอดเงินก่อนดิ 🤣', 3000, true);
     return;
   }
 
-  const newQrUrl = `https://www.pp-qr.com/api/image/${myPromptpayId}/${amount}`;
-  qrImage.src = newQrUrl;
-  qrAmountDisplay.textContent = `${amount} บาท`;
+  // --- ส่วนที่เปลี่ยนคือตรงนี้ ---
+  // สร้าง QR Code เป็น Data URL (ข้อมูลรูปภาพที่อยู่ในรูปข้อความ)
+  const payload = promptpay(myPromptpayId, { amount });
+
+  // เอารูปไปโชว์ในแท็ก img ได้เลย!
+  qrImage.src = payload;
+  // --- จบส่วนที่เปลี่ยน ---
+
+  qrAmountDisplay.textContent = `${amount.toFixed(2)} บาท`; // toFixed(2) เผื่อยอดมีทศนิยม
 
   qrResultArea.classList.remove('hidden');
   qrInstruction.classList.add('hidden');
